@@ -6,8 +6,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import id.ergun.mystoryapp.data.repository.auth.AuthRepositoryImpl
 import id.ergun.mystoryapp.data.repository.story.StoryRepositoryImpl
+import id.ergun.mystoryapp.data.repository.story.paging.StoryListRepositoryImpl
 import id.ergun.mystoryapp.domain.repository.auth.AuthRepository
 import id.ergun.mystoryapp.domain.repository.story.StoryRepository
+import id.ergun.mystoryapp.domain.repository.story.paging.StoryListRepository
 
 /**
  * @author erikgunawan
@@ -20,4 +22,6 @@ abstract class RepositoryModule {
     abstract fun bindAuthRepository(impl: AuthRepositoryImpl): AuthRepository
     @Binds
     abstract fun bindStoryRepository(impl: StoryRepositoryImpl): StoryRepository
+    @Binds
+    abstract fun bindStoryListRepository(impl: StoryListRepositoryImpl): StoryListRepository
 }

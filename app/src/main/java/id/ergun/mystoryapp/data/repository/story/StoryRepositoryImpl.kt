@@ -31,7 +31,9 @@ class StoryRepositoryImpl @Inject constructor(private val apiService: ApiService
     override suspend fun getStories(): Flow<ResponseWrapper<ArrayList<StoryDataModel>>> {
         return flow {
             try {
-                emit(apiService.getStories(getHeaderMap()).getResult {
+                val params = HashMap<String, String>()
+                params["page"] = "1"
+                emit(apiService.getStories(getHeaderMap(), params).getResult {
                     StoriesResponse.mapToDomainModelList(it)
                 })
             } catch (exception: Exception) {

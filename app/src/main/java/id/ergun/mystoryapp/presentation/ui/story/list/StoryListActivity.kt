@@ -5,9 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mystoryapp.databinding.ActivityStoryListBinding
-import id.ergun.mystoryapp.presentation.viewmodel.StoryViewModel
+import id.ergun.mystoryapp.presentation.viewmodel.StoryListViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 /**
  * @author erikgunawan
@@ -18,31 +22,33 @@ import id.ergun.mystoryapp.presentation.viewmodel.StoryViewModel
 class StoryListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStoryListBinding
 
-    private val viewModel by viewModels<StoryViewModel>()
+    private val viewModel by viewModels<StoryListViewModel>()
+
+    private val adapter: StoryListAdapter by lazy { StoryListAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStoryListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupAdapter()
         setupObserve()
-        setupListener()
-        getStories()
+    }
+
+    private fun setupAdapter() {
+        binding.rvData.let {
+            it.layoutManager = LinearLayoutManager(this)
+            it.adapter = adapter
+        }
     }
 
     private fun setupObserve() {
+        lifecycleScope.launch {
+            viewModel.getStories().collectLatest {
+                adapter.submitData(it)
+            }
+        }
     }
-
-    private fun setupListener() {
-    }
-
-    private fun getStories() {
-        viewModel.getStories()
-    }
-
-    private fun dologin() {
-    }
-
 
     companion object {
         fun newIntent(context: Context): Intent =

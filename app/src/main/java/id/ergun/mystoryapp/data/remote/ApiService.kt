@@ -2,10 +2,7 @@ package id.ergun.mystoryapp.data.remote
 
 import id.ergun.mystoryapp.data.remote.model.*
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.HeaderMap
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /**
  * @author erikgunawan
@@ -26,5 +23,5 @@ interface ApiService {
     suspend fun createStoryGuest(@Body request: StoryFormRequest): Response<BaseResponse>
 
     @GET("v1/stories")
-    suspend fun getStories(@HeaderMap headers: Map<String, String>): Response<StoriesResponse>
+    suspend fun getStories(@HeaderMap headers: Map<String, String>, @QueryMap params: HashMap<String, String>): Response<StoriesResponse>
 }

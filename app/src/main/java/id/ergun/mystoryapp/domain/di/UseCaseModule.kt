@@ -8,6 +8,8 @@ import id.ergun.mystoryapp.domain.usecase.auth.AuthUseCase
 import id.ergun.mystoryapp.domain.usecase.auth.AuthUseCaseImpl
 import id.ergun.mystoryapp.domain.usecase.story.StoryUseCase
 import id.ergun.mystoryapp.domain.usecase.story.StoryUseCaseImpl
+import id.ergun.mystoryapp.domain.usecase.story.paging.StoryListUseCase
+import id.ergun.mystoryapp.domain.usecase.story.paging.StoryListUseCaseImpl
 
 /**
  * @author erikgunawan
@@ -20,4 +22,6 @@ abstract class UseCaseModule {
  abstract fun bindAuthUseCase(impl: AuthUseCaseImpl): AuthUseCase
  @Binds
  abstract fun bindStoryUseCase(impl: StoryUseCaseImpl): StoryUseCase
+ @Binds
+ abstract fun bindStoryListUseCase(impl: StoryListUseCaseImpl): StoryListUseCase
 }
