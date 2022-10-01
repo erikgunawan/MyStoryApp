@@ -4,7 +4,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import id.ergun.mystoryapp.data.repository.auth.AuthRepositoryImpl
 import id.ergun.mystoryapp.data.repository.story.StoryRepositoryImpl
+import id.ergun.mystoryapp.domain.repository.auth.AuthRepository
 import id.ergun.mystoryapp.domain.repository.story.StoryRepository
 
 /**
@@ -14,6 +16,8 @@ import id.ergun.mystoryapp.domain.repository.story.StoryRepository
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
+    @Binds
+    abstract fun bindAuthRepository(impl: AuthRepositoryImpl): AuthRepository
     @Binds
     abstract fun bindStoryRepository(impl: StoryRepositoryImpl): StoryRepository
 }

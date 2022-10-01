@@ -28,6 +28,10 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <activity android:name=".presentation.ui.auth.register.RegisterActivity" />
+        <activity android:name=".presentation.ui.auth.login.LoginActivity" />
+        <activity android:name=".presentation.ui.story.list.StoryListActivity" />
     </application>
 
 </manifest>

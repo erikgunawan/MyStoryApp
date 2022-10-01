@@ -19,18 +19,13 @@ class StoryViewModel @Inject constructor(
     private val storyUseCase: StoryUseCase
 ) : ViewModel() {
 
+    private val _storyList = MutableLiveData<ResponseWrapper<ArrayList<StoryDataModel>>>()
+    val stories = _storyList
 
-    private val _movieList = MutableLiveData<ResponseWrapper<ArrayList<StoryDataModel>>>()
-    val stories = _movieList
-
-    init {
-        fetchMovies()
-    }
-
-    private fun fetchMovies() {
+    fun getStories() {
         viewModelScope.launch {
             storyUseCase.getStories().collect {
-                _movieList.value = it
+                _storyList.value = it
             }
         }
     }

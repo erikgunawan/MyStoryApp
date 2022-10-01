@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import id.ergun.mystoryapp.domain.usecase.auth.AuthUseCase
+import id.ergun.mystoryapp.domain.usecase.auth.AuthUseCaseImpl
 import id.ergun.mystoryapp.domain.usecase.story.StoryUseCase
 import id.ergun.mystoryapp.domain.usecase.story.StoryUseCaseImpl
 
@@ -14,6 +16,8 @@ import id.ergun.mystoryapp.domain.usecase.story.StoryUseCaseImpl
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class UseCaseModule {
+ @Binds
+ abstract fun bindAuthUseCase(impl: AuthUseCaseImpl): AuthUseCase
  @Binds
  abstract fun bindStoryUseCase(impl: StoryUseCaseImpl): StoryUseCase
 }

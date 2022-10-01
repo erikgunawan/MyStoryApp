@@ -31,12 +31,19 @@ class StoryRepositoryImpl @Inject constructor(private val apiService: ApiService
     override suspend fun getStories(): Flow<ResponseWrapper<ArrayList<StoryDataModel>>> {
         return flow {
             try {
-                emit(apiService.getStories().getResult {
+                emit(apiService.getStories(getHeaderMap()).getResult {
                     StoriesResponse.mapToDomainModelList(it)
                 })
             } catch (exception: Exception) {
                 ResponseWrapper.error("exception", null)
             }
         }.flowOn(Dispatchers.IO)
+    }
+
+
+    private fun getHeaderMap(): Map<String, String> {
+        val headerMap = mutableMapOf<String, String>()
+        headerMap["Authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLXBvVE51NVJOZkhfZ19nYXEiLCJpYXQiOjE2NjQ2MzcwNTF9.edYWxCyVK2M1G6SZSudt_EMEmgKmgLUm67zVp3MPqds"
+        return headerMap
     }
 }
