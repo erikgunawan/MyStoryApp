@@ -9,6 +9,7 @@ import id.ergun.mystoryapp.databinding.ActivityMainBinding
 import id.ergun.mystoryapp.presentation.ui.auth.login.LoginActivity
 import id.ergun.mystoryapp.presentation.ui.auth.register.RegisterActivity
 import id.ergun.mystoryapp.presentation.ui.story.list.StoryListActivity
+import id.ergun.mystoryapp.presentation.ui.story.new.StoryNewActivity
 import id.ergun.mystoryapp.presentation.viewmodel.StoryViewModel
 import timber.log.Timber
 
@@ -32,6 +33,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupListener() {
         binding.run {
+            btnStoryNew.setOnClickListener {
+                startActivity(StoryNewActivity.newIntent(this@MainActivity))
+            }
             btnStories.setOnClickListener {
                 startActivity(StoryListActivity.newIntent(this@MainActivity))
             }

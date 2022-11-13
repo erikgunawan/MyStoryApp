@@ -17,11 +17,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/btn_story_new"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Story New"
+        app:layout_constraintTop_toBottomOf="@id/tv_hello" />
+
+    <Button
         android:id="@+id/btn_stories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Story List"
-        app:layout_constraintTop_toBottomOf="@id/tv_hello" />
+        app:layout_constraintTop_toBottomOf="@id/btn_story_new" />
     <Button
         android:id="@+id/btn_register"
         android:layout_width="match_parent"

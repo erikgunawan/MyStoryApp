@@ -16,11 +16,9 @@ interface ApiService {
     @POST("v1/login")
     suspend fun login(@Body request: AuthRequest): Response<LoginResponse>
 
+    @Multipart
     @POST("v1/stories")
     suspend fun createStory(@Body request: StoryFormRequest): Response<BaseResponse>
-
-    @POST("v1/stories/guest")
-    suspend fun createStoryGuest(@Body request: StoryFormRequest): Response<BaseResponse>
 
     @GET("v1/stories")
     suspend fun getStories(@HeaderMap headers: Map<String, String>, @QueryMap params: HashMap<String, String>): Response<StoriesResponse>

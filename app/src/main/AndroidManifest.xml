@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -32,6 +35,7 @@
         <activity android:name=".presentation.ui.auth.register.RegisterActivity" />
         <activity android:name=".presentation.ui.auth.login.LoginActivity" />
         <activity android:name=".presentation.ui.story.list.StoryListActivity" />
+        <activity android:name=".presentation.ui.story.new.StoryNewActivity" />
     </application>
 
 </manifest>
