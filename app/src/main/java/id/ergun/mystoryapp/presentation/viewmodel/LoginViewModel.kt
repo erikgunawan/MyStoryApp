@@ -20,16 +20,14 @@ class LoginViewModel @Inject constructor(
     private val authUseCase: AuthUseCase
 ) : ViewModel() {
 
-
     private val _loginResponse = MutableLiveData<ResponseWrapper<AuthDataModel>>()
     val loginResponse = _loginResponse
 
     fun login(request: AuthRequest) {
         viewModelScope.launch {
             authUseCase.login(request).collect {
-                loginResponse.postValue(it)
+                _loginResponse.postValue(it)
             }
         }
     }
-
 }

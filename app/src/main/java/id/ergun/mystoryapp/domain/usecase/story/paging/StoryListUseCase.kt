@@ -10,5 +10,5 @@ import kotlinx.coroutines.flow.Flow
  * Created 02/10/22 at 01.18
  */
 interface StoryListUseCase {
-    fun getStories(params: HashMap<String, String>, scope: CoroutineScope): Flow<PagingData<StoryDataModel>>
+    fun getStories(token: String, scope: CoroutineScope): Flow<PagingData<StoryDataModel>>
 }

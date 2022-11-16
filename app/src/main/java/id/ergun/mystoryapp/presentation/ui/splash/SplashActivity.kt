@@ -2,20 +2,29 @@ package id.ergun.mystoryapp.presentation.ui.splash
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
+import id.ergun.mystoryapp.MainActivity
+import id.ergun.mystoryapp.common.util.ResponseWrapper
 import id.ergun.mystoryapp.databinding.ActivitySplashBinding
 import id.ergun.mystoryapp.presentation.ui.auth.login.LoginActivity
+import id.ergun.mystoryapp.presentation.viewmodel.AccountViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * @author erikgunawan
  * Created 15/11/22 at 05.41
  */
 @SuppressLint("CustomSplashScreen")
+@AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySplashBinding
+
+    private val viewModel by viewModels<AccountViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,12 +32,31 @@ class SplashActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            gotoHomeActivity()
-        }, 1000)
+        setupObserve()
+
+        lifecycleScope.launch {
+            delay(2000)
+            viewModel.getToken()
+        }
+    }
+
+    private fun setupObserve() {
+        lifecycleScope.launch {
+            viewModel.token.observe(this@SplashActivity) {
+                when (it.status) {
+                    ResponseWrapper.Status.SUCCESS -> gotoHomeActivity()
+                    else -> gotoLoginActivity()
+                }
+            }
+        }
     }
 
     private fun gotoHomeActivity() {
+        startActivity(MainActivity.newIntent(this))
+        finish()
+    }
+
+    private fun gotoLoginActivity() {
         startActivity(LoginActivity.newIntent(this))
         finish()
     }

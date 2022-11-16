@@ -3,14 +3,14 @@ package id.ergun.mystoryapp.presentation.ui.auth.register
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import id.ergun.mystoryapp.common.util.ResponseWrapper
 import id.ergun.mystoryapp.data.remote.model.AuthRequest
 import id.ergun.mystoryapp.databinding.ActivityRegisterBinding
 import id.ergun.mystoryapp.presentation.viewmodel.RegisterViewModel
-import timber.log.Timber
 
 /**
  * @author erikgunawan
@@ -33,7 +33,16 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun setupObserve() {
         viewModel.registerResponse.observe(this) {
-            Timber.d(Gson().toJson(it))
+            when (it.status) {
+                ResponseWrapper.Status.SUCCESS -> {
+                    if (it.data?.error == false) {
+                        onRegisterSuccess(it.data.message)
+                    }
+                }
+                else -> {
+
+                }
+            }
         }
     }
 
@@ -51,6 +60,13 @@ class RegisterActivity : AppCompatActivity() {
             name, email, password
         )
         viewModel.register(request)
+    }
+
+    private fun onRegisterSuccess(message: String) {
+        if (message.isNotEmpty())
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+        finish()
     }
 
     companion object {

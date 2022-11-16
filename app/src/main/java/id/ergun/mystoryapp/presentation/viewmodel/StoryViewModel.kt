@@ -5,9 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.ergun.mystoryapp.common.util.ResponseWrapper
+import id.ergun.mystoryapp.data.remote.model.StoryFormRequest
+import id.ergun.mystoryapp.domain.model.BaseDomainModel
 import id.ergun.mystoryapp.domain.model.StoryDataModel
 import id.ergun.mystoryapp.domain.usecase.story.StoryUseCase
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 /**
@@ -22,12 +25,21 @@ class StoryViewModel @Inject constructor(
     private val _storyList = MutableLiveData<ResponseWrapper<ArrayList<StoryDataModel>>>()
     val stories = _storyList
 
-    fun getStories() {
+    private val _createStoryResponse = MutableLiveData<ResponseWrapper<BaseDomainModel>>()
+    val createStoryResponse = _createStoryResponse
+
+
+
+
+    lateinit var selectedStory: StoryDataModel
+
+    fun createStory(description: String) {
         viewModelScope.launch {
-            storyUseCase.getStories().collect {
-                _storyList.value = it
+            val request = StoryFormRequest(description, File.createTempFile("abc","def"))
+
+            storyUseCase.createStory(request).collect {
+                _createStoryResponse.postValue(it)
             }
         }
     }
-
 }

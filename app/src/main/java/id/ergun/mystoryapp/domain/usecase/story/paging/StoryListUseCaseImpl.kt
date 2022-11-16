@@ -13,9 +13,9 @@ import javax.inject.Inject
  */
 class StoryListUseCaseImpl @Inject constructor(private val repository: StoryListRepository): StoryListUseCase {
     override fun getStories(
-        params: HashMap<String, String>,
+        token: String,
         scope: CoroutineScope
     ): Flow<PagingData<StoryDataModel>> {
-        return repository.getStories(params, scope)
+        return repository.getStories(token, scope)
     }
 }

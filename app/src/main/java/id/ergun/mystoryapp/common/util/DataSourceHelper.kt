@@ -49,12 +49,6 @@ fun <T, R> Response<T>.getResult(transform: (T) -> (R)): ResponseWrapper<R> {
     return success(body)
    }
   }
-  if (response.code() == 422) {
-   val response = response.errorBody()!!.parseErrorBody()
-   return error(response?.message.toString())
-  } else if (response.code() == 401) {
-   return error("Unauthenticated. Silahkan melakukan login ulang.", code = 401)
-  }
   return error("Terjadi kesalahan")
  } catch (e: Exception) {
   return error(e.message ?: e.toString())

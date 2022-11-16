@@ -1,11 +1,15 @@
 package id.ergun.mystoryapp.presentation.ui.story.list
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import id.ergun.mystoryapp.R
+import id.ergun.mystoryapp.common.util.Helper.fromHtml
+import id.ergun.mystoryapp.common.util.Helper.loadImage
+import id.ergun.mystoryapp.common.util.Helper.toLocalDateFormat
 import id.ergun.mystoryapp.databinding.ItemStoryBinding
 import id.ergun.mystoryapp.domain.model.StoryDataModel
 
@@ -14,48 +18,58 @@ import id.ergun.mystoryapp.domain.model.StoryDataModel
  * Created 02/10/22 at 01.25
  */
 class StoryListAdapter :
- PagingDataAdapter<StoryDataModel, StoryListAdapter.ViewHolder>(DiffCallback) {
+    PagingDataAdapter<StoryDataModel, StoryListAdapter.ViewHolder>(DiffCallback) {
 
- override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-  val view = LayoutInflater.from(parent.context)
-   .inflate(R.layout.item_story, parent, false)
+    var itemClickListener: ((view: View, model: StoryDataModel) -> Unit)? = null
 
-  val binding = ItemStoryBinding.bind(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_story, parent, false)
 
-  return ViewHolder(binding)
- }
+        val binding = ItemStoryBinding.bind(view)
 
- override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-  getItem(position)?.let {
-   val item = getItem(position) ?: return
-   holder.bind(item)
-  }
- }
+        return ViewHolder(binding)
+    }
 
- inner class ViewHolder(
-  private val binding: ItemStoryBinding
- ) : RecyclerView.ViewHolder(binding.root) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        getItem(position)?.let {
+            val item = getItem(position) ?: return
+            holder.bind(item)
+        }
+    }
 
-  fun bind(item: StoryDataModel) {
-   binding.tvTitle.text = item.name
-  }
- }
+    inner class ViewHolder(
+        private val binding: ItemStoryBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
 
- companion object {
+        fun bind(item: StoryDataModel) {
+            binding.run {
+                tvDate.text = item.createdAt.toLocalDateFormat()
+                tvNameDesc.text = tvNameDesc.context.getString(R.string.name_desc_string_format, item.name, item.description).fromHtml()
+                ivPhoto.loadImage(item.photoUrl)
+            }
 
-  object DiffCallback : DiffUtil.ItemCallback<StoryDataModel>() {
-   override fun areItemsTheSame(
-    oldItem: StoryDataModel,
-    newItem: StoryDataModel
-   ): Boolean {
-    return oldItem.id == newItem.id
-   }
+            itemView.setOnClickListener {
+                itemClickListener?.invoke(binding.ivPhoto, item)
+            }
+        }
+    }
 
-   override fun areContentsTheSame(
-    oldItem: StoryDataModel,
-    newItem: StoryDataModel
-   ) = oldItem == newItem
-  }
- }
+    companion object {
+
+        object DiffCallback : DiffUtil.ItemCallback<StoryDataModel>() {
+            override fun areItemsTheSame(
+                oldItem: StoryDataModel,
+                newItem: StoryDataModel
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: StoryDataModel,
+                newItem: StoryDataModel
+            ) = oldItem == newItem
+        }
+    }
 
 }

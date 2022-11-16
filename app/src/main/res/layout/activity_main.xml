@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <include layout="@layout/toolbar_view"
+        android:id="@+id/toolbar_view"/>
+
     <TextView
         android:id="@+id/tv_hello"
         android:layout_width="wrap_content"

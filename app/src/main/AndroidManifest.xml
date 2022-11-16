@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -30,10 +33,15 @@
 
         <activity android:name=".MainActivity" />
 
-        <activity android:name=".presentation.ui.auth.register.RegisterActivity" />
-        <activity android:name=".presentation.ui.auth.login.LoginActivity" />
-        <activity android:name=".presentation.ui.story.list.StoryListActivity" />
-        <activity android:name=".presentation.ui.story.new.StoryNewActivity" />
+        <activity android:name=".presentation.ui.auth.register.RegisterActivity"
+            android:theme="@style/AppTheme.NoActionBar.Primary"/>
+
+        <activity android:name=".presentation.ui.auth.login.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar.Primary"/>
+
+        <activity android:name=".presentation.ui.story.list.StoryListActivity"/>
+        <activity android:name=".presentation.ui.story.create.StoryCreateActivity" />
+        <activity android:name=".presentation.ui.story.detail.StoryDetailActivity" />
     </application>
 
 </manifest>

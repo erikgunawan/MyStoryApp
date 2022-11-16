@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import id.ergun.mystoryapp.data.local.AuthDataStore
 import id.ergun.mystoryapp.data.paging.StoryListDataSource
 import id.ergun.mystoryapp.data.remote.ApiService
 import id.ergun.mystoryapp.domain.model.StoryDataModel
@@ -18,15 +19,16 @@ import javax.inject.Inject
  */
 
 class StoryListRepositoryImpl @Inject constructor(
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val authDataStore: AuthDataStore
 ) : StoryListRepository {
 
     override fun getStories(
-        params: HashMap<String, String>,
+        token: String,
         scope: CoroutineScope
     ): Flow<PagingData<StoryDataModel>> {
         return Pager(config = PagingConfig(10)) {
-            StoryListDataSource(apiService)
+            StoryListDataSource(apiService, authDataStore)
         }.flow.cachedIn(scope)
     }
 }

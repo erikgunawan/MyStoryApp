@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.ergun.mystoryapp.common.util.ResponseWrapper
 import id.ergun.mystoryapp.data.remote.model.AuthRequest
-import id.ergun.mystoryapp.domain.model.AuthDataModel
+import id.ergun.mystoryapp.domain.model.BaseDomainModel
 import id.ergun.mystoryapp.domain.usecase.auth.AuthUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,7 +20,7 @@ class RegisterViewModel @Inject constructor(
     private val authUseCase: AuthUseCase
 ) : ViewModel() {
 
-    private val _registerResponse = MutableLiveData<ResponseWrapper<AuthDataModel>>()
+    private val _registerResponse = MutableLiveData<ResponseWrapper<BaseDomainModel>>()
     val registerResponse = _registerResponse
 
     fun register(request: AuthRequest) {

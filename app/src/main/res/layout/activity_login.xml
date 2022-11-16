@@ -23,6 +23,7 @@
         android:src="@drawable/img_mystoryapp"
         android:adjustViewBounds="true"
         android:layout_marginTop="24dp"
+        android:transitionName="logo_image"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,4 +77,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
+
+    <TextView
+        android:id="@+id/tv_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Belum punya akun? Daftar Di Sini"
+        android:textSize="20sp"
+        android:textColor="@color/teal_200"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:focusable="true"
+        android:clickable="true"
+        app:layout_constraintTop_toBottomOf="@id/btn_login" />
 </androidx.constraintlayout.widget.ConstraintLayout>

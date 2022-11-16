@@ -3,12 +3,17 @@ package id.ergun.mystoryapp.presentation.ui.auth.login
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import id.ergun.mystoryapp.MainActivity
+import id.ergun.mystoryapp.common.util.ResponseWrapper
 import id.ergun.mystoryapp.data.remote.model.AuthRequest
 import id.ergun.mystoryapp.databinding.ActivityLoginBinding
+import id.ergun.mystoryapp.presentation.ui.auth.register.RegisterActivity
 import id.ergun.mystoryapp.presentation.viewmodel.LoginViewModel
 import timber.log.Timber
 
@@ -33,13 +38,30 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupObserve() {
         viewModel.loginResponse.observe(this) {
+            when (it.status) {
+                ResponseWrapper.Status.SUCCESS -> {
+                    if (it.data != null) {
+                        Toast.makeText(this, "Login berhasil", Toast.LENGTH_SHORT).show()
+                        gotoMainPage()
+                    }
+                }
+                else -> {
+
+                }
+            }
             Timber.d(Gson().toJson(it))
         }
     }
 
     private fun setupListener() {
-        binding.btnLogin.setOnClickListener {
-            dologin()
+        binding.run {
+            btnLogin.setOnClickListener {
+                dologin()
+            }
+
+            tvRegister.setOnClickListener {
+                gotoRegisterPage()
+            }
         }
     }
 
@@ -52,6 +74,19 @@ class LoginActivity : AppCompatActivity() {
         viewModel.login(request)
     }
 
+    private fun gotoRegisterPage() {
+        val intent = RegisterActivity.newIntent(this)
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+            binding.ivAppLogo, "logo_image")
+
+        startActivity(intent, options.toBundle())
+    }
+
+    private fun gotoMainPage() {
+        val intent = MainActivity.newIntent(this)
+        startActivity(intent)
+        finish()
+    }
 
     companion object {
         fun newIntent(context: Context): Intent =

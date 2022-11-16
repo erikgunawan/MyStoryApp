@@ -1,6 +1,11 @@
 package id.ergun.mystoryapp.data.remote
 
-import id.ergun.mystoryapp.data.remote.model.*
+import id.ergun.mystoryapp.data.remote.model.AuthRequest
+import id.ergun.mystoryapp.data.remote.model.BaseResponse
+import id.ergun.mystoryapp.data.remote.model.LoginResponse
+import id.ergun.mystoryapp.data.remote.model.StoriesResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -18,7 +23,13 @@ interface ApiService {
 
     @Multipart
     @POST("v1/stories")
-    suspend fun createStory(@Body request: StoryFormRequest): Response<BaseResponse>
+    suspend fun createStory(
+        @HeaderMap headers: Map<String, String>,
+        @Part photo:  MultipartBody.Part,
+        @Part("description") description : RequestBody,
+        @Part("lat") lat : Double = 0.0,
+        @Part("lon") long : Double = 0.0
+    ): Response<BaseResponse>
 
     @GET("v1/stories")
     suspend fun getStories(@HeaderMap headers: Map<String, String>, @QueryMap params: HashMap<String, String>): Response<StoriesResponse>
