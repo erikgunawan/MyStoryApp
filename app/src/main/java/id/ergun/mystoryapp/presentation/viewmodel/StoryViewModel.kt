@@ -10,7 +10,6 @@ import id.ergun.mystoryapp.domain.model.BaseDomainModel
 import id.ergun.mystoryapp.domain.model.StoryDataModel
 import id.ergun.mystoryapp.domain.usecase.story.StoryUseCase
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 
 /**
@@ -33,9 +32,9 @@ class StoryViewModel @Inject constructor(
 
     lateinit var selectedStory: StoryDataModel
 
-    fun createStory(description: String) {
+    fun createStory(request: StoryFormRequest) {
         viewModelScope.launch {
-            val request = StoryFormRequest(description, File.createTempFile("abc","def"))
+//            val request = StoryFormRequest(description, File.createTempFile("abc","def"))
 
             storyUseCase.createStory(request).collect {
                 _createStoryResponse.postValue(it)

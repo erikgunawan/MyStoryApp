@@ -31,17 +31,29 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity" />
-
         <activity android:name=".presentation.ui.auth.register.RegisterActivity"
-            android:theme="@style/AppTheme.NoActionBar.Primary"/>
+            android:theme="@style/AppTheme.NoActionBar.Primary"
+            android:windowSoftInputMode="adjustPan"/>
 
         <activity android:name=".presentation.ui.auth.login.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar.Primary"/>
+            android:theme="@style/AppTheme.NoActionBar.Primary"
+            android:windowSoftInputMode="adjustPan"/>
 
         <activity android:name=".presentation.ui.story.list.StoryListActivity"/>
-        <activity android:name=".presentation.ui.story.create.StoryCreateActivity" />
+        <activity android:name=".presentation.ui.story.create.StoryCreateActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
         <activity android:name=".presentation.ui.story.detail.StoryDetailActivity" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="id.ergun.mystoryapp"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
     </application>
 
 </manifest>
