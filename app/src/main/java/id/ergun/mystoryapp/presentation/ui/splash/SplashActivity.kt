@@ -10,6 +10,7 @@ import id.ergun.mystoryapp.MainActivity
 import id.ergun.mystoryapp.common.util.ResponseWrapper
 import id.ergun.mystoryapp.databinding.ActivitySplashBinding
 import id.ergun.mystoryapp.presentation.ui.auth.login.LoginActivity
+import id.ergun.mystoryapp.presentation.ui.story.list.StoryListActivity
 import id.ergun.mystoryapp.presentation.viewmodel.AccountViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -44,19 +45,19 @@ class SplashActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.token.observe(this@SplashActivity) {
                 when (it.status) {
-                    ResponseWrapper.Status.SUCCESS -> gotoHomeActivity()
-                    else -> gotoLoginActivity()
+                    ResponseWrapper.Status.SUCCESS -> gotoHomePage()
+                    else -> gotoLoginPage()
                 }
             }
         }
     }
 
-    private fun gotoHomeActivity() {
-        startActivity(MainActivity.newIntent(this))
+    private fun gotoHomePage() {
+        startActivity(StoryListActivity.newIntent(this))
         finish()
     }
 
-    private fun gotoLoginActivity() {
+    private fun gotoLoginPage() {
         startActivity(LoginActivity.newIntent(this))
         finish()
     }

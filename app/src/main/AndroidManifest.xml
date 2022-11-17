@@ -20,6 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyStoryApp"
+        android:largeHeap="true"
         tools:targetApi="31">
 
         <activity android:name=".presentation.ui.splash.SplashActivity"
@@ -40,8 +41,22 @@
             android:theme="@style/AppTheme.NoActionBar.Primary"/>
 
         <activity android:name=".presentation.ui.story.list.StoryListActivity"/>
-        <activity android:name=".presentation.ui.story.create.StoryCreateActivity" />
+        <activity android:name=".presentation.ui.story.create.StoryCreateActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
         <activity android:name=".presentation.ui.story.detail.StoryDetailActivity" />
+        <activity android:name=".presentation.ui.camera.CameraActivity"
+            android:exported="false"/>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="id.ergun.mystoryapp"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
     </application>
 
 </manifest>

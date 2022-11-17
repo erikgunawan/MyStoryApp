@@ -9,4 +9,11 @@
 
     <string name="yes">Ya</string>
     <string name="cancel">Batal</string>
+
+    <string name="message_data_not_found">Data tidak ditemukan</string>
+    <string name="try_again">Coba lagi</string>
+
+    <string name="create_story">Buat Story</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
 </resources>

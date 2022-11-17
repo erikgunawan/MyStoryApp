@@ -12,5 +12,8 @@ object Const {
  const val API_KEY: String = "api_key"
  const val INITIAL_PAGE: Int = 1
 
+
+    const val SHARED_ELEMENT_PHOTO = "photo_image"
+    const val SHARED_ELEMENT_LOGO = "logo_image"
  val PREFERENCES_KEY_TOKEN = stringPreferencesKey("token")
 }

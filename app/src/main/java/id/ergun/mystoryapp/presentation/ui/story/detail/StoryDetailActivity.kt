@@ -32,27 +32,17 @@ class StoryDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupToolbar()
-        setupObserve()
 
         loadExtras()
         adjustView(viewModel.selectedStory)
     }
 
     private fun setupToolbar() {
-
         setSupportActionBar(binding.toolbarView.toolbar)
         supportActionBar?.run {
             setDisplayShowHomeEnabled(true)
             setDisplayHomeAsUpEnabled(true)
             title = ""
-        }
-    }
-
-    private fun setupObserve() {
-        lifecycleScope.launch {
-//      viewModel.getStories().collectLatest {
-//        adapter.submitData(it)
-//      }
         }
     }
 

@@ -14,6 +14,7 @@ import id.ergun.mystoryapp.common.util.ResponseWrapper
 import id.ergun.mystoryapp.data.remote.model.AuthRequest
 import id.ergun.mystoryapp.databinding.ActivityLoginBinding
 import id.ergun.mystoryapp.presentation.ui.auth.register.RegisterActivity
+import id.ergun.mystoryapp.presentation.ui.story.list.StoryListActivity
 import id.ergun.mystoryapp.presentation.viewmodel.LoginViewModel
 import timber.log.Timber
 
@@ -83,7 +84,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun gotoMainPage() {
-        val intent = MainActivity.newIntent(this)
+        val intent = StoryListActivity.newIntent(this)
         startActivity(intent)
         finish()
     }
