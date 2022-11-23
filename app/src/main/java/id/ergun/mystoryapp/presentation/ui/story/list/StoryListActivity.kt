@@ -24,6 +24,7 @@ import id.ergun.mystoryapp.common.util.ResponseWrapper
 import id.ergun.mystoryapp.databinding.ActivityStoryListBinding
 import id.ergun.mystoryapp.domain.model.StoryDataModel
 import id.ergun.mystoryapp.presentation.ui.auth.login.LoginActivity
+import id.ergun.mystoryapp.presentation.ui.map.MapActivity
 import id.ergun.mystoryapp.presentation.ui.story.create.StoryCreateActivity
 import id.ergun.mystoryapp.presentation.ui.story.detail.StoryDetailActivity
 import id.ergun.mystoryapp.presentation.viewmodel.AccountViewModel
@@ -185,10 +186,17 @@ class StoryListActivity : AppCompatActivity() {
         finish()
     }
 
+    private fun gotoMapActivity() {
+        startActivity(MapActivity.newIntent(this))
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_logout -> {
                 showLogoutConfirmationDialog()
+            }
+            R.id.action_map -> {
+                gotoMapActivity()
             }
         }
         return super.onOptionsItemSelected(item)
