@@ -6,14 +6,12 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mystoryapp.common.util.Helper.loadImage
 import id.ergun.mystoryapp.common.util.Helper.toLocalDateFormat
 import id.ergun.mystoryapp.databinding.ActivityStoryDetailBinding
 import id.ergun.mystoryapp.domain.model.StoryDataModel
 import id.ergun.mystoryapp.presentation.viewmodel.StoryViewModel
-import kotlinx.coroutines.launch
 
 /**
  * @author erikgunawan
