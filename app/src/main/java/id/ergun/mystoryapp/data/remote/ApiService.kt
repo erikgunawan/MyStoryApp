@@ -31,6 +31,6 @@ interface ApiService {
         @Part("lon") long : Double = 0.0
     ): Response<BaseResponse>
 
-    @GET("v1/stories")
+    @GET("v1/stories?location=1")
     suspend fun getStories(@HeaderMap headers: Map<String, String>, @QueryMap params: HashMap<String, String>): Response<StoriesResponse>
 }
