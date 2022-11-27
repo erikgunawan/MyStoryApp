@@ -27,9 +27,6 @@ class StoryViewModel @Inject constructor(
     private val _createStoryResponse = MutableLiveData<ResponseWrapper<BaseDomainModel>>()
     val createStoryResponse = _createStoryResponse
 
-
-
-
     lateinit var selectedStory: StoryDataModel
 
     fun createStory(request: StoryFormRequest) {
@@ -38,6 +35,14 @@ class StoryViewModel @Inject constructor(
 
             storyUseCase.createStory(request).collect {
                 _createStoryResponse.postValue(it)
+            }
+        }
+    }
+
+    fun getStories(params: HashMap<String, String>) {
+        viewModelScope.launch {
+            storyUseCase.getStories(params).collect {
+                _storyList.postValue(it)
             }
         }
     }

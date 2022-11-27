@@ -6,7 +6,15 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
+import id.ergun.mystoryapp.R
 import id.ergun.mystoryapp.common.util.Helper.loadImage
 import id.ergun.mystoryapp.common.util.Helper.toLocalDateFormat
 import id.ergun.mystoryapp.databinding.ActivityStoryDetailBinding
@@ -18,11 +26,13 @@ import id.ergun.mystoryapp.presentation.viewmodel.StoryViewModel
  * Created 15/11/22 at 22.46
  */
 @AndroidEntryPoint
-class StoryDetailActivity : AppCompatActivity() {
+class StoryDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityStoryDetailBinding
 
     private val viewModel by viewModels<StoryViewModel>()
+
+    private lateinit var mMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +41,7 @@ class StoryDetailActivity : AppCompatActivity() {
 
         setupToolbar()
 
+        setupMapView()
         loadExtras()
         adjustView(viewModel.selectedStory)
     }
@@ -42,6 +53,11 @@ class StoryDetailActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             title = ""
         }
+    }
+
+    private fun setupMapView() {
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_view) as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
 
     private fun loadExtras() {
@@ -57,6 +73,33 @@ class StoryDetailActivity : AppCompatActivity() {
             tvDate.text = story.createdAt.toLocalDateFormat()
             ivPhoto.loadImage(story.photoUrl)
         }
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+
+        mMap.uiSettings.isScrollGesturesEnabled = false
+        mMap.uiSettings.isZoomControlsEnabled = true
+        mMap.uiSettings.isIndoorLevelPickerEnabled = true
+        mMap.uiSettings.isCompassEnabled = true
+        mMap.uiSettings.isMapToolbarEnabled = true
+
+        val boundsBuilder = LatLngBounds.Builder()
+
+        val latLng = LatLng(viewModel.selectedStory.lat, viewModel.selectedStory.lon)
+//      val addressName = getAddressName(tourism.latitude, tourism.longitude)
+        mMap.addMarker(MarkerOptions().position(latLng).title("abc").snippet("def"))
+        boundsBuilder.include(latLng)
+
+        val bounds: LatLngBounds = boundsBuilder.build()
+        mMap.animateCamera(
+            CameraUpdateFactory.newLatLngBounds(
+                bounds,
+                resources.displayMetrics.widthPixels,
+                resources.displayMetrics.heightPixels,
+                300
+            )
+        )
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

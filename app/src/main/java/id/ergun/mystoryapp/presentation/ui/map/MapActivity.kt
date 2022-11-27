@@ -45,7 +45,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
 
         val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
+            .findFragmentById(R.id.map_view) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
 
