@@ -27,6 +27,7 @@ import id.ergun.mystoryapp.presentation.ui.auth.login.LoginActivity
 import id.ergun.mystoryapp.presentation.ui.map.MapActivity
 import id.ergun.mystoryapp.presentation.ui.story.create.StoryCreateActivity
 import id.ergun.mystoryapp.presentation.ui.story.detail.StoryDetailActivity
+import id.ergun.mystoryapp.presentation.ui.story.map.StoryMapActivity
 import id.ergun.mystoryapp.presentation.viewmodel.AccountViewModel
 import id.ergun.mystoryapp.presentation.viewmodel.StoryListViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -101,6 +102,10 @@ class StoryListActivity : AppCompatActivity() {
 
             fabNewStory.setOnClickListener {
                 gotoCreateStoryPage()
+            }
+
+            btnMap.setOnClickListener {
+                gotoStoryMapPage()
             }
         }
 
@@ -188,6 +193,10 @@ class StoryListActivity : AppCompatActivity() {
 
     private fun gotoMapActivity() {
         startActivity(MapActivity.newIntent(this))
+    }
+
+    private fun gotoStoryMapPage() {
+        startActivity(StoryMapActivity.newIntent(this))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

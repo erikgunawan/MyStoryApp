@@ -51,6 +51,7 @@
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
         <activity android:name=".presentation.ui.story.detail.StoryDetailActivity" />
         <activity android:name=".presentation.ui.map.MapActivity" />
+        <activity android:name=".presentation.ui.story.map.StoryMapActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

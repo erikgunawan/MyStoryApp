@@ -3,6 +3,7 @@ package id.ergun.mystoryapp.domain.repository.story
 import id.ergun.mystoryapp.common.util.ResponseWrapper
 import id.ergun.mystoryapp.data.remote.model.StoryFormRequest
 import id.ergun.mystoryapp.domain.model.BaseDomainModel
+import id.ergun.mystoryapp.domain.model.StoryDataModel
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -11,4 +12,5 @@ import kotlinx.coroutines.flow.Flow
  */
 interface StoryRepository {
     suspend fun createStory(request: StoryFormRequest): Flow<ResponseWrapper<BaseDomainModel>>
+    suspend fun getStories(params: HashMap<String, String>): Flow<ResponseWrapper<ArrayList<StoryDataModel>>>
 }

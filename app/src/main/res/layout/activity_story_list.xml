@@ -8,6 +8,13 @@
     <include layout="@layout/toolbar_view"
         android:id="@+id/toolbar_view"/>
 
+    <Button
+        android:id="@+id/btn_map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tampilkan Story pada Peta"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_view" />
+
     <ViewAnimator
         android:id="@+id/view_animator"
         android:layout_width="match_parent"

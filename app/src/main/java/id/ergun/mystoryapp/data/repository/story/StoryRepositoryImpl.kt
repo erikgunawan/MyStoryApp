@@ -6,8 +6,10 @@ import id.ergun.mystoryapp.common.util.ResponseWrapper
 import id.ergun.mystoryapp.common.util.getResult
 import id.ergun.mystoryapp.data.local.AuthDataStore
 import id.ergun.mystoryapp.data.remote.ApiService
+import id.ergun.mystoryapp.data.remote.model.StoriesResponse
 import id.ergun.mystoryapp.data.remote.model.StoryFormRequest
 import id.ergun.mystoryapp.domain.model.BaseDomainModel
+import id.ergun.mystoryapp.domain.model.StoryDataModel
 import id.ergun.mystoryapp.domain.repository.story.StoryRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -54,6 +56,24 @@ class StoryRepositoryImpl @Inject constructor(
                         it.error ?: false,
                         it.message ?: ""
                     )
+                }
+                emit(response)
+            } catch (exception: Exception) {
+                emit(ResponseWrapper.error("Terjadi kesalahan"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun getStories(params: HashMap<String, String>): Flow<ResponseWrapper<ArrayList<StoryDataModel>>> {
+        return flow {
+            try {
+                val token = authDataStore.getToken().getOrDefault("")
+
+                val response = apiService.getStories(
+                    Helper.getHeaderMap(token),
+                    params
+                ).getResult {
+                    StoriesResponse.mapToDomainModelList(it)
                 }
                 emit(response)
             } catch (exception: Exception) {

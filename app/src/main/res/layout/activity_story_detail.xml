@@ -39,7 +39,7 @@
                 />
 
             <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/map"
+                android:id="@+id/map_view"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
@@ -56,7 +56,7 @@
                 android:textColor="@color/black"
                 android:gravity="end"
                 tools:text="Title"
-                app:layout_constraintTop_toBottomOf="@id/map"
+                app:layout_constraintTop_toBottomOf="@id/map_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
