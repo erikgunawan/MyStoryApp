@@ -7,6 +7,12 @@
         app:showAsAction="always"
         app:iconTint="#FFFFFF"
         android:icon="@drawable/ic_map" />
+  <item
+      android:id="@+id/action_locale_setting"
+      android:title="Pengaturan Bahasa"
+      app:showAsAction="never"
+      app:iconTint="#FFFFFF"
+      android:icon="@drawable/ic_action_settings" />
     <item
         android:id="@+id/action_logout"
         android:title="@string/logout"

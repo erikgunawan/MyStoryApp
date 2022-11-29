@@ -6,7 +6,7 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/toolbar_view"
+    <include layout="@layout/toolbar_child_view"
         android:id="@+id/toolbar_view"/>
 
     <androidx.core.widget.NestedScrollView

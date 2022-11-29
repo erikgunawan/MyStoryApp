@@ -3,6 +3,8 @@ package id.ergun.mystoryapp.common.util
 import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityOptionsCompat
+import com.bumptech.glide.load.Options
 
 /**
  * @author erikgunawan
@@ -21,10 +23,11 @@ class ActivityResultLauncher<Input, Result> private constructor(
 
  fun launch(
   intent: Input,
-  onActivityResult: OnActivityResult<Result>?
+  onActivityResult: OnActivityResult<Result>?,
+   options: ActivityOptionsCompat? = null
  ) {
   this.onActivityResult = onActivityResult
-  launcher.launch(intent)
+  launcher.launch(intent, options)
  }
 
  interface OnActivityResult<O> {

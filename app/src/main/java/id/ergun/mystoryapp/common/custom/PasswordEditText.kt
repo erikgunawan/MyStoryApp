@@ -1,10 +1,14 @@
 package id.ergun.mystoryapp.common.custom
 
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.util.Patterns
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.content.ContextCompat
 import id.ergun.mystoryapp.R
 
 /**
@@ -12,6 +16,10 @@ import id.ergun.mystoryapp.R
  * Created 18/11/22 at 00.28
  */
 class PasswordEditText : AppCompatEditText {
+
+  private var errorBackground: Drawable? = null
+  private var defaultBackground: Drawable? = null
+  private var errorInput: Boolean = false
 
     constructor(context: Context) : super(context)
 
@@ -24,17 +32,29 @@ class PasswordEditText : AppCompatEditText {
     )
 
     init {
-        addTextChangedListener(object : TextWatcher {
+      defaultBackground = ContextCompat.getDrawable(context, R.drawable.bg_input_default)
+      errorBackground = ContextCompat.getDrawable(context, R.drawable.bg_input_error)
+
+      addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                if (s != null && s.length < PASSWORD_MIN_LENGTH) {
+              val isInvalid = s != null && s.length < PASSWORD_MIN_LENGTH
+              if (isInvalid) {
                     this@PasswordEditText.error =
                         this@PasswordEditText.context.getString(R.string.input_password_min_length_error)
                 }
+              errorInput = isInvalid
             }
         })
     }
+
+  override fun onDraw(canvas: Canvas?) {
+    super.onDraw(canvas)
+    background =
+      if (errorInput) errorBackground
+      else defaultBackground
+  }
 
     companion object {
         private const val PASSWORD_MIN_LENGTH = 6
