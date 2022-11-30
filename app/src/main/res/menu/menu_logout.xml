@@ -4,7 +4,7 @@
   <item
       android:id="@+id/action_locale_setting"
       android:title="@string/language_setting"
-      app:showAsAction="never"
+      app:showAsAction="always"
       app:iconTint="#FFFFFF"
       android:icon="@drawable/ic_action_settings" />
     <item

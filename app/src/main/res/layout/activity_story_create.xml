@@ -30,6 +30,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/camera"
+                android:background="@drawable/btn_primary_rounded_ripple"
                 android:layout_marginHorizontal="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_gallery"
@@ -41,6 +42,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/gallery"
+                android:background="@drawable/btn_primary_rounded_ripple"
                 android:layout_marginHorizontal="16dp"
                 app:layout_constraintStart_toEndOf="@id/btn_camera"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -63,19 +65,35 @@
                 tools:ignore="LabelFor"
                 />
 
-            <id.ergun.mystoryapp.common.custom.DescriptionEditText
+            <TextView
+                android:id="@+id/btn_refresh_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/refresh_lokasi"
+                android:textColor="@color/white"
+                android:paddingVertical="4dp"
+                android:paddingHorizontal="16dp"
+                android:background="@drawable/btn_primary_rounded_ripple"
+                android:layout_marginTop="16dp"
+                android:drawablePadding="8dp"
+                app:layout_constraintStart_toStartOf="@id/et_description"
+                app:layout_constraintTop_toBottomOf="@id/et_description"
+                app:drawableStartCompat="@drawable/ic_gps" />
+
+            <TextView
                 android:id="@+id/et_address_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/story_description_hint"
+                android:background="@drawable/bg_input_default"
                 android:ems="10"
                 android:gravity="start|top"
-                android:inputType="textMultiLine"
                 android:lines="3"
                 android:importantForAutofill="no"
                 android:layout_margin="16dp"
                 android:padding="16dp"
-                app:layout_constraintTop_toBottomOf="@id/et_description"
+                android:enabled="false"
+                app:layout_constraintTop_toBottomOf="@id/btn_refresh_location"
                 tools:ignore="LabelFor"
                 />
 

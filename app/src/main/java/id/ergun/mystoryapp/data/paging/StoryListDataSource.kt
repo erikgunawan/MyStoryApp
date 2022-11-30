@@ -51,8 +51,8 @@ class StoryListDataSource(
         data: List<StoryDataModel>,
         prevKey: Int? = null,
         nextKey: Int? = null
-    ): PagingSource.LoadResult<Int, StoryDataModel> {
-        return PagingSource.LoadResult.Page(
+    ): LoadResult<Int, StoryDataModel> {
+        return LoadResult.Page(
             data = data,
             prevKey = prevKey,
             nextKey = nextKey

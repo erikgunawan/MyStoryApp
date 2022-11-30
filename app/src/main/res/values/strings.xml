@@ -31,14 +31,16 @@
     <string name="loading">Loading</string>
     <string name="please_wait">Please wait…</string>
 
-    <string name="need_upload_photo_error">Harap upload foto</string>
-    <string name="general_input_error">Masih terdapat isian data yang salah. Harap perbaiki</string>
-    <string name="input_password_empty_error">Password tidak boleh kosong</string>
-    <string name="input_password_min_length_error">Password kurang dari 6 karakter</string>
-    <string name="input_email_empty_error">Email tidak boleh kosong</string>
-    <string name="input_email_validation_error">Format email tidak valid</string>
-    <string name="input_name_empty_error">Nama tidak boleh kosong</string>
-    <string name="input_description_empty_error">Deskripsi tidak boleh kosong</string>
+    <string name="need_upload_photo_error">Please upload a photo</string>
+    <string name="general_input_error">There are still incorrect data entries. Please fix it</string>
+    <string name="input_password_empty_error">Password cannot be empty</string>
+    <string name="input_password_min_length_error">Password less than 6 characters</string>
+    <string name="input_email_empty_error">Email cannot be empty</string>
+    <string name="input_email_validation_error">Invalid email format</string>
+    <string name="input_name_empty_error">Name cannot be empty</string>
+    <string name="input_description_empty_error">Description cannot be empty</string>
     <string name="register_here_link">Don\'t have an account? <b>Sign Up here</b></string>
     <string name="story_description_hint">Story Description</string>
+    <string name="show_story_on_map">Show Story on Map</string>
+    <string name="refresh_lokasi">Location Refresh</string>
 </resources>

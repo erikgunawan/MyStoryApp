@@ -1,6 +1,5 @@
 package id.ergun.mystoryapp.presentation.ui.auth.login
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -19,7 +18,6 @@ import id.ergun.mystoryapp.common.util.ResponseWrapper
 import id.ergun.mystoryapp.data.remote.model.AuthRequest
 import id.ergun.mystoryapp.databinding.ActivityLoginBinding
 import id.ergun.mystoryapp.presentation.ui.auth.register.RegisterActivity
-import id.ergun.mystoryapp.presentation.ui.story.create.StoryCreateActivity
 import id.ergun.mystoryapp.presentation.ui.story.list.StoryListActivity
 import id.ergun.mystoryapp.presentation.viewmodel.LoginViewModel
 
@@ -133,8 +131,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun newIntent(context: Context): Intent =
-            Intent(context, LoginActivity::class.java).apply {
-            }
+        fun newIntent(context: Context): Intent = Intent(context, LoginActivity::class.java)
     }
 }
