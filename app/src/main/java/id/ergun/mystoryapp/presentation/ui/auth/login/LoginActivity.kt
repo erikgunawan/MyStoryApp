@@ -1,19 +1,25 @@
 package id.ergun.mystoryapp.presentation.ui.auth.login
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResult
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mystoryapp.R
+import id.ergun.mystoryapp.common.util.ActivityResultLauncher
 import id.ergun.mystoryapp.common.util.Helper.showToast
 import id.ergun.mystoryapp.common.util.ResponseWrapper
 import id.ergun.mystoryapp.data.remote.model.AuthRequest
 import id.ergun.mystoryapp.databinding.ActivityLoginBinding
 import id.ergun.mystoryapp.presentation.ui.auth.register.RegisterActivity
+import id.ergun.mystoryapp.presentation.ui.story.create.StoryCreateActivity
 import id.ergun.mystoryapp.presentation.ui.story.list.StoryListActivity
 import id.ergun.mystoryapp.presentation.viewmodel.LoginViewModel
 
@@ -27,6 +33,8 @@ class LoginActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<LoginViewModel>()
 
+    private lateinit var activityLauncher: ActivityResultLauncher<Intent, ActivityResult>
+
     private val loadingDialog by lazy {
         MaterialDialog(this)
             .title(R.string.loading)
@@ -39,6 +47,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        activityLauncher = ActivityResultLauncher.register(this)
 
         setupObserve()
         setupListener()
@@ -108,7 +118,12 @@ class LoginActivity : AppCompatActivity() {
 
     private fun gotoRegisterPage() {
         val intent = RegisterActivity.newIntent(this)
-        startActivity(intent)
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+            Pair.create(binding.edLoginEmail, "input_email"),
+            Pair.create(binding.edLoginPassword, "input_password"),
+        )
+
+        startActivity(intent, options.toBundle())
     }
 
     private fun gotoMainPage() {

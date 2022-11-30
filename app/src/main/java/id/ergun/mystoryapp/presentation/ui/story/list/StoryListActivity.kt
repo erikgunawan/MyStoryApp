@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -151,6 +152,10 @@ class StoryListActivity : AppCompatActivity() {
     }
 
     private fun gotoCreateStoryPage() {
+
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+            binding.toolbarView.ivToolbar, "toolbar_image")
+
         val intent = StoryCreateActivity.newIntent(this)
         activityLauncher.launch(intent,
             object : ActivityResultLauncher.OnActivityResult<ActivityResult> {
@@ -159,7 +164,8 @@ class StoryListActivity : AppCompatActivity() {
                         refreshData()
                     }
                 }
-            })
+            },
+            options)
     }
 
     private fun showLogoutConfirmationDialog() {
@@ -204,8 +210,8 @@ class StoryListActivity : AppCompatActivity() {
             R.id.action_logout -> {
                 showLogoutConfirmationDialog()
             }
-            R.id.action_map -> {
-                gotoMapActivity()
+            R.id.action_locale_setting -> {
+                startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
             }
         }
         return super.onOptionsItemSelected(item)

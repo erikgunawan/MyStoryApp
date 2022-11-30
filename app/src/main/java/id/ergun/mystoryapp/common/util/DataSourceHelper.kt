@@ -8,26 +8,26 @@ import timber.log.Timber
  * Created 27/09/22 at 22.21
  */
 fun <T, R> Response<T>.getResult(transform: (T) -> (R)): ResponseWrapper<R> {
- try {
-  val response = this
-  if (response.isSuccessful && response.body() != null) {
-   val body = transform(response.body()!!)
-   if (body != null) {
-    return success(body)
-   }
-  }
-  return error("Terjadi kesalahan")
- } catch (e: Exception) {
-  return error(e.message ?: e.toString())
- }
+    try {
+        val response = this
+        if (response.isSuccessful && response.body() != null) {
+            val body = transform(response.body()!!)
+            if (body != null) {
+                return success(body)
+            }
+        }
+        return error("Terjadi kesalahan")
+    } catch (e: Exception) {
+        return error(e.message ?: e.toString())
+    }
 }
 
 
 private fun <T> success(body: T): ResponseWrapper<T> {
- return ResponseWrapper.success(body)
+    return ResponseWrapper.success(body)
 }
 
 private fun <T> error(message: String, code: Int? = null, data: T? = null): ResponseWrapper<T> {
- Timber.e(message)
- return ResponseWrapper.error(message, data = data, code = code)
+    Timber.e(message)
+    return ResponseWrapper.error(message, data = data, code = code)
 }

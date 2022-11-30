@@ -18,10 +18,10 @@ import id.ergun.mystoryapp.domain.usecase.story.paging.StoryListUseCaseImpl
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class UseCaseModule {
- @Binds
- abstract fun bindAuthUseCase(impl: AuthUseCaseImpl): AuthUseCase
- @Binds
- abstract fun bindStoryUseCase(impl: StoryUseCaseImpl): StoryUseCase
- @Binds
- abstract fun bindStoryListUseCase(impl: StoryListUseCaseImpl): StoryListUseCase
+    @Binds
+    abstract fun bindAuthUseCase(impl: AuthUseCaseImpl): AuthUseCase
+    @Binds
+    abstract fun bindStoryUseCase(impl: StoryUseCaseImpl): StoryUseCase
+    @Binds
+    abstract fun bindStoryListUseCase(impl: StoryListUseCaseImpl): StoryListUseCase
 }

@@ -3,23 +3,24 @@
 
     <string name="name_desc_string_format"><![CDATA[<b>%s</b> %s]]></string>
     <string name="logout">Logout</string>
+    <string name="language_setting">Language Setting</string>
 
-    <string name="dialog.logout.confirmation.title">Konfirmasi Logout</string>
-    <string name="dialog.logout.confirmation.message">Apakah Anda yakin ingin logout?</string>
+    <string name="dialog.logout.confirmation.title">Logout Confirmation</string>
+    <string name="dialog.logout.confirmation.message">Are you sure you want to logout?</string>
 
-    <string name="yes">Ya</string>
-    <string name="cancel">Batal</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
 
-    <string name="message_data_not_found">Data tidak ditemukan</string>
-    <string name="try_again">Coba lagi</string>
+    <string name="message_data_not_found">Data not found</string>
+    <string name="try_again">Try Again</string>
 
-    <string name="login_success_message">Login berhasil</string>
+    <string name="login_success_message">Login successful</string>
 
-    <string name="need_permission_message">Permission diperlukan untuk menggunakan fitur ini.</string>
+    <string name="need_permission_message">Permission is required to use this feature.</string>
 
-    <string name="create_story">Buat Story</string>
-    <string name="camera">Kamera</string>
-    <string name="gallery">Galeri</string>
+    <string name="create_story">Create Story</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
 
     <string name="name">Name</string>
     <string name="email">Email</string>
@@ -28,7 +29,7 @@
     <string name="register">Register</string>
 
     <string name="loading">Loading</string>
-    <string name="please_wait">Mohon tunggu…</string>
+    <string name="please_wait">Please wait…</string>
 
     <string name="need_upload_photo_error">Harap upload foto</string>
     <string name="general_input_error">Masih terdapat isian data yang salah. Harap perbaiki</string>
@@ -38,6 +39,6 @@
     <string name="input_email_validation_error">Format email tidak valid</string>
     <string name="input_name_empty_error">Nama tidak boleh kosong</string>
     <string name="input_description_empty_error">Deskripsi tidak boleh kosong</string>
-    <string name="register_here_link">Belum punya akun? Daftar Di Sini</string>
-    <string name="story_description_hint">Deskripsi story</string>
+    <string name="register_here_link">Don\'t have an account? <b>Sign Up here</b></string>
+    <string name="story_description_hint">Story Description</string>
 </resources>
