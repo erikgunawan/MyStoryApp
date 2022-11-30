@@ -60,6 +60,7 @@ class StoryDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
+    @Suppress("DEPRECATION")
     private fun loadExtras() {
         intent?.run {
             viewModel.selectedStory = getParcelableExtra(EXTRA_STORY_DATA_MODEL) ?: return
@@ -107,12 +108,6 @@ class StoryDetailActivity : AppCompatActivity(), OnMapReadyCallback {
             android.R.id.home -> supportFinishAfterTransition()
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        super.onBackPressed()
-        supportFinishAfterTransition()
     }
 
     companion object {

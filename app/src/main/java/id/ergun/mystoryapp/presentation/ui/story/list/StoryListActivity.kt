@@ -13,6 +13,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,7 +27,6 @@ import id.ergun.mystoryapp.common.util.ResponseWrapper
 import id.ergun.mystoryapp.databinding.ActivityStoryListBinding
 import id.ergun.mystoryapp.domain.model.StoryDataModel
 import id.ergun.mystoryapp.presentation.ui.auth.login.LoginActivity
-import id.ergun.mystoryapp.presentation.ui.map.MapActivity
 import id.ergun.mystoryapp.presentation.ui.story.create.StoryCreateActivity
 import id.ergun.mystoryapp.presentation.ui.story.detail.StoryDetailActivity
 import id.ergun.mystoryapp.presentation.ui.story.map.StoryMapActivity
@@ -200,12 +200,13 @@ class StoryListActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun gotoMapActivity() {
-        startActivity(MapActivity.newIntent(this))
-    }
-
     private fun gotoStoryMapPage() {
-        startActivity(StoryMapActivity.newIntent(this))
+        val intent = StoryMapActivity.newIntent(this)
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+            Pair.create(binding.toolbarView.ivToolbar, "toolbar_image")
+        )
+
+        startActivity(intent, options.toBundle())
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

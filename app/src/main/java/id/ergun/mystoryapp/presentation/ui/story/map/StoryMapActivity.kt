@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.os.Bundle
-import android.util.Log
+import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -22,9 +22,11 @@ import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mystoryapp.R
 import id.ergun.mystoryapp.common.util.ResponseWrapper
-import id.ergun.mystoryapp.databinding.ActivityMapBinding
+import id.ergun.mystoryapp.databinding.ActivityStoryMapBinding
 import id.ergun.mystoryapp.domain.model.StoryDataModel
+import id.ergun.mystoryapp.presentation.ui.story.detail.StoryDetailActivity
 import id.ergun.mystoryapp.presentation.viewmodel.StoryViewModel
+import timber.log.Timber
 
 /**
  * @author erikgunawan
@@ -33,16 +35,17 @@ import id.ergun.mystoryapp.presentation.viewmodel.StoryViewModel
 
 @AndroidEntryPoint
 class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
-    private lateinit var binding: ActivityMapBinding
+    private lateinit var binding: ActivityStoryMapBinding
 
     private val viewModel by viewModels<StoryViewModel>()
 
     private lateinit var mMap: GoogleMap
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMapBinding.inflate(layoutInflater)
+        binding = ActivityStoryMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupToolbar()
         setupMapView()
 
         val params = hashMapOf<String, String>()
@@ -52,6 +55,14 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
         setupObserve()
     }
 
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbarView.toolbar)
+        supportActionBar?.run {
+            setDisplayShowHomeEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+            title = ""
+        }
+    }
 
     private fun setupMapView() {
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_view) as SupportMapFragment
@@ -78,7 +89,7 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
                     .position(latLng)
                     .title(story.name)
                     .snippet(story.description)
-            )
+            )?.tag = story
             boundsBuilder.include(latLng)
         }
         val bounds: LatLngBounds = boundsBuilder.build()
@@ -106,6 +117,12 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         getMyLocation()
         setMapStyle()
+
+
+        mMap.setOnInfoWindowClickListener { marker ->
+            val story: StoryDataModel = marker.tag as StoryDataModel
+            gotoDetailStoryPage(story)
+        }
     }
 
     private val requestPermissionLauncher =
@@ -134,14 +151,26 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
             val success =
                 mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
             if (!success) {
-                Log.e(TAG, "Style parsing failed.")
+                Timber.tag(TAG).e("Style parsing failed.")
             }
         } catch (exception: Resources.NotFoundException) {
-            Log.e(TAG, "Can't find style. Error: ", exception)
+            Timber.tag(TAG).e(exception, "Can't find style. Error: ")
         }
     }
 
     private val boundsBuilder = LatLngBounds.Builder()
+
+    private fun gotoDetailStoryPage(story: StoryDataModel) {
+        val intent = StoryDetailActivity.newIntent(this, story)
+        startActivity(intent)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> supportFinishAfterTransition()
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     companion object {
         private const val TAG = "MapsActivity"

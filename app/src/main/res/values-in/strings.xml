@@ -1,45 +1,46 @@
 <resources>
-  <string name="app_name">My StoryApp</string>
+    <string name="app_name">My StoryApp</string>
 
-  <string name="name_desc_string_format"><![CDATA[<b>%s</b> %s]]></string>
-  <string name="logout">Logout</string>
-  <string name="language_setting">Pengaturan Bahasa</string>
+    <string name="name_desc_string_format"><![CDATA[<b>%s</b> %s]]></string>
+    <string name="logout">Logout</string>
+    <string name="language_setting">Pengaturan Bahasa</string>
 
-  <string name="dialog.logout.confirmation.title">Konfirmasi Logout</string>
-  <string name="dialog.logout.confirmation.message">Apakah Anda yakin ingin logout?</string>
+    <string name="dialog.logout.confirmation.title">Konfirmasi Logout</string>
+    <string name="dialog.logout.confirmation.message">Apakah Anda yakin ingin logout?</string>
 
-  <string name="yes">Ya</string>
-  <string name="cancel">Batal</string>
+    <string name="yes">Ya</string>
+    <string name="cancel">Batal</string>
 
-  <string name="message_data_not_found">Data tidak ditemukan</string>
-  <string name="try_again">Coba lagi</string>
+    <string name="message_data_not_found">Data tidak ditemukan</string>
+    <string name="try_again">Coba lagi</string>
 
-  <string name="login_success_message">Login berhasil</string>
+    <string name="login_success_message">Login berhasil</string>
 
-  <string name="need_permission_message">Izin diperlukan untuk menggunakan fitur ini.</string>
+    <string name="need_permission_message">Izin diperlukan untuk menggunakan fitur ini.</string>
 
-  <string name="create_story">Buat Story</string>
-  <string name="camera">Kamera</string>
-  <string name="gallery">Galeri</string>
+    <string name="create_story">Buat Story</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
 
-  <string name="name">Nama</string>
-  <string name="email">Email</string>
-  <string name="password">Password</string>
-  <string name="login">Login</string>
-  <string name="register">Daftar</string>
+    <string name="name">Nama</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Daftar</string>
 
-  <string name="loading">Memuat Data</string>
-  <string name="please_wait">Mohon tunggu…</string>
+    <string name="loading">Memuat Data</string>
+    <string name="please_wait">Mohon tunggu…</string>
 
-  <string name="need_upload_photo_error">Harap upload foto</string>
-  <string name="general_input_error">Masih terdapat isian data yang salah. Harap perbaiki</string>
-  <string name="input_password_empty_error">Password tidak boleh kosong</string>
-  <string name="input_password_min_length_error">Password kurang dari 6 karakter</string>
-  <string name="input_email_empty_error">Email tidak boleh kosong</string>
-  <string name="input_email_validation_error">Format email tidak valid</string>
-  <string name="input_name_empty_error">Nama tidak boleh kosong</string>
-  <string name="input_description_empty_error">Deskripsi tidak boleh kosong</string>
-  <string name="register_here_link">Belum punya akun? Daftar Di Sini</string>
-  <string name="story_description_hint">Deskripsi story</string>
-  <string name="show_story_on_map">Tampilkan Story pada Peta</string>
+    <string name="need_upload_photo_error">Harap upload foto</string>
+    <string name="general_input_error">Masih terdapat isian data yang salah. Harap perbaiki</string>
+    <string name="input_password_empty_error">Password tidak boleh kosong</string>
+    <string name="input_password_min_length_error">Password kurang dari 6 karakter</string>
+    <string name="input_email_empty_error">Email tidak boleh kosong</string>
+    <string name="input_email_validation_error">Format email tidak valid</string>
+    <string name="input_name_empty_error">Nama tidak boleh kosong</string>
+    <string name="input_description_empty_error">Deskripsi tidak boleh kosong</string>
+    <string name="register_here_link">Belum punya akun? Daftar Di Sini</string>
+    <string name="story_description_hint">Deskripsi story</string>
+    <string name="show_story_on_map">Tampilkan Story pada Peta</string>
+    <string name="refresh_lokasi">Refresh Lokasi</string>
 </resources>
