@@ -8,6 +8,7 @@ import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.core.util.Pair
 import androidx.activity.result.ActivityResult
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -187,7 +188,9 @@ class StoryListActivity : AppCompatActivity() {
     private fun gotoDetailStoryPage(view: View, model: StoryDataModel) {
         val intent = StoryDetailActivity.newIntent(this, model)
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-            view, Const.SHARED_ELEMENT_PHOTO)
+          Pair.create(view, Const.SHARED_ELEMENT_PHOTO),
+          Pair.create(binding.toolbarView.ivToolbar, "toolbar_image")
+        )
 
         startActivity(intent, options.toBundle())
     }

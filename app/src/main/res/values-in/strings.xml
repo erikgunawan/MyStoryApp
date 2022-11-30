@@ -41,4 +41,5 @@
   <string name="input_description_empty_error">Deskripsi tidak boleh kosong</string>
   <string name="register_here_link">Belum punya akun? Daftar Di Sini</string>
   <string name="story_description_hint">Deskripsi story</string>
+  <string name="show_story_on_map">Tampilkan Story pada Peta</string>
 </resources>
