@@ -3,6 +3,7 @@
 
   <string name="name_desc_string_format"><![CDATA[<b>%s</b> %s]]></string>
   <string name="logout">Logout</string>
+  <string name="language_setting">Pengaturan Bahasa</string>
 
   <string name="dialog.logout.confirmation.title">Konfirmasi Logout</string>
   <string name="dialog.logout.confirmation.message">Apakah Anda yakin ingin logout?</string>

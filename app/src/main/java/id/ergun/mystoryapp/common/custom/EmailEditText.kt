@@ -17,42 +17,42 @@ import id.ergun.mystoryapp.R
  */
 class EmailEditText : AppCompatEditText {
 
-  private var errorBackground: Drawable? = null
-  private var defaultBackground: Drawable? = null
-  private var errorInput: Boolean = false
+    private var errorBackground: Drawable? = null
+    private var defaultBackground: Drawable? = null
+    private var errorInput: Boolean = false
 
-  constructor(context: Context) : super(context)
+    constructor(context: Context) : super(context)
 
-  constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
-  constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
-    context,
-    attrs,
-    defStyleAttr
-  )
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    )
 
-  init {
-    defaultBackground = ContextCompat.getDrawable(context, R.drawable.bg_input_default)
-    errorBackground = ContextCompat.getDrawable(context, R.drawable.bg_input_error)
+    init {
+        defaultBackground = ContextCompat.getDrawable(context, R.drawable.bg_input_default)
+        errorBackground = ContextCompat.getDrawable(context, R.drawable.bg_input_error)
 
-    addTextChangedListener(object : TextWatcher {
-      override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-      override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-      override fun afterTextChanged(s: Editable?) {
-        val isInvalid = s != null && !Patterns.EMAIL_ADDRESS.matcher(s).matches()
-        if (isInvalid) {
-          this@EmailEditText.error =
-            this@EmailEditText.context.getString(R.string.input_email_validation_error)
-        }
-        errorInput = isInvalid
-      }
-    })
-  }
+        addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                val isInvalid = s != null && !Patterns.EMAIL_ADDRESS.matcher(s).matches()
+                if (isInvalid) {
+                    this@EmailEditText.error =
+                        this@EmailEditText.context.getString(R.string.input_email_validation_error)
+                }
+                errorInput = isInvalid
+            }
+        })
+    }
 
-  override fun onDraw(canvas: Canvas?) {
-    super.onDraw(canvas)
-    background =
-      if (errorInput) errorBackground
-      else defaultBackground
-  }
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+        background =
+            if (errorInput) errorBackground
+            else defaultBackground
+    }
 }

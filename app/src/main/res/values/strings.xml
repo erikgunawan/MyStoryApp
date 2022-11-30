@@ -3,6 +3,7 @@
 
     <string name="name_desc_string_format"><![CDATA[<b>%s</b> %s]]></string>
     <string name="logout">Logout</string>
+    <string name="language_setting">Language Setting</string>
 
     <string name="dialog.logout.confirmation.title">Logout Confirmation</string>
     <string name="dialog.logout.confirmation.message">Are you sure you want to logout?</string>
@@ -38,6 +39,6 @@
     <string name="input_email_validation_error">Format email tidak valid</string>
     <string name="input_name_empty_error">Nama tidak boleh kosong</string>
     <string name="input_description_empty_error">Deskripsi tidak boleh kosong</string>
-    <string name="register_here_link">Belum punya akun? Daftar Di Sini</string>
-    <string name="story_description_hint">Deskripsi story</string>
+    <string name="register_here_link">Don\'t have an account? <b>Sign Up here</b></string>
+    <string name="story_description_hint">Story Description</string>
 </resources>

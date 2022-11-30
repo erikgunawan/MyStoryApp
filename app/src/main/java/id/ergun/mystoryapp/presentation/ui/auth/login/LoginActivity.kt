@@ -33,10 +33,9 @@ class LoginActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<LoginViewModel>()
 
-  private lateinit var activityLauncher: ActivityResultLauncher<Intent, ActivityResult>
+    private lateinit var activityLauncher: ActivityResultLauncher<Intent, ActivityResult>
 
-
-  private val loadingDialog by lazy {
+    private val loadingDialog by lazy {
         MaterialDialog(this)
             .title(R.string.loading)
             .customView(R.layout.loading_dialog)
@@ -49,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-      activityLauncher = ActivityResultLauncher.register(this)
+        activityLauncher = ActivityResultLauncher.register(this)
 
         setupObserve()
         setupListener()
@@ -119,12 +118,12 @@ class LoginActivity : AppCompatActivity() {
 
     private fun gotoRegisterPage() {
         val intent = RegisterActivity.newIntent(this)
-      val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-        Pair.create(binding.edLoginEmail, "input_email"),
-        Pair.create(binding.edLoginPassword, "input_password"),
-      )
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+            Pair.create(binding.edLoginEmail, "input_email"),
+            Pair.create(binding.edLoginPassword, "input_password"),
+        )
 
-      startActivity(intent, options.toBundle())
+        startActivity(intent, options.toBundle())
     }
 
     private fun gotoMainPage() {

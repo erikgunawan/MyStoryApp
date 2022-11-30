@@ -88,7 +88,7 @@ class StoryDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val latLng = LatLng(viewModel.selectedStory.lat, viewModel.selectedStory.lon)
 //      val addressName = getAddressName(tourism.latitude, tourism.longitude)
-        mMap.addMarker(MarkerOptions().position(latLng).title("abc").snippet("def"))
+        mMap.addMarker(MarkerOptions().position(latLng).title("abc").snippet("def"))?.showInfoWindow()
         boundsBuilder.include(latLng)
 
         val bounds: LatLngBounds = boundsBuilder.build()

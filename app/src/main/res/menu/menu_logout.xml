@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_map"
-        android:title="Peta"
-        app:showAsAction="always"
-        app:iconTint="#FFFFFF"
-        android:icon="@drawable/ic_map" />
   <item
       android:id="@+id/action_locale_setting"
-      android:title="Pengaturan Bahasa"
+      android:title="@string/language_setting"
       app:showAsAction="never"
       app:iconTint="#FFFFFF"
       android:icon="@drawable/ic_action_settings" />

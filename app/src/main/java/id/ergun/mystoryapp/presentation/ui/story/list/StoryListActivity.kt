@@ -40,214 +40,211 @@ import kotlinx.coroutines.launch
  */
 @AndroidEntryPoint
 class StoryListActivity : AppCompatActivity() {
-  private lateinit var binding: ActivityStoryListBinding
+    private lateinit var binding: ActivityStoryListBinding
 
-  private val viewModel by viewModels<StoryListViewModel>()
-  private val accountViewModel by viewModels<AccountViewModel>()
+    private val viewModel by viewModels<StoryListViewModel>()
+    private val accountViewModel by viewModels<AccountViewModel>()
 
-  private val adapter: StoryListAdapter by lazy { StoryListAdapter() }
+    private val adapter: StoryListAdapter by lazy { StoryListAdapter() }
 
-  private lateinit var activityLauncher: ActivityResultLauncher<Intent, ActivityResult>
+    private lateinit var activityLauncher: ActivityResultLauncher<Intent, ActivityResult>
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    binding = ActivityStoryListBinding.inflate(layoutInflater)
-    setContentView(binding.root)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityStoryListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-    activityLauncher = ActivityResultLauncher.register(this)
+        activityLauncher = ActivityResultLauncher.register(this)
 
-    setupToolbar()
-    setupAdapter()
-    setupObserve()
-    setupListener()
-  }
-
-  private fun setupToolbar() {
-    setSupportActionBar(binding.toolbarView.toolbar)
-    supportActionBar?.run {
-      title = ""
-    }
-  }
-
-  private fun setupAdapter() {
-    adapter.itemClickListener = { view, model ->
-      gotoDetailStoryPage(view,model)
+        setupToolbar()
+        setupAdapter()
+        setupObserve()
+        setupListener()
     }
 
-    binding.rvData.let {
-      it.layoutManager = LinearLayoutManager(this)
-      it.adapter = adapter
-    }
-  }
-
-  private fun setupObserve() {
-    lifecycleScope.launch {
-      viewModel.getStories().collectLatest {
-        adapter.submitData(it)
-      }
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbarView.toolbar)
+        supportActionBar?.run {
+            title = ""
+        }
     }
 
-    accountViewModel.logoutResponse.observe(this) {
-      when (it.status) {
-        ResponseWrapper.Status.SUCCESS -> gotoLoginPage()
-        else -> {}
-      }
-    }
-  }
+    private fun setupAdapter() {
+        adapter.itemClickListener = { view, model ->
+            gotoDetailStoryPage(view,model)
+        }
 
-  private fun setupListener() {
-    binding.run {
-      swipeRefresh.setOnRefreshListener {
+        binding.rvData.let {
+            it.layoutManager = LinearLayoutManager(this)
+            it.adapter = adapter
+        }
+    }
+
+    private fun setupObserve() {
+        lifecycleScope.launch {
+            viewModel.getStories().collectLatest {
+                adapter.submitData(it)
+            }
+        }
+
+        accountViewModel.logoutResponse.observe(this) {
+            when (it.status) {
+                ResponseWrapper.Status.SUCCESS -> gotoLoginPage()
+                else -> {}
+            }
+        }
+    }
+
+    private fun setupListener() {
+        binding.run {
+            swipeRefresh.setOnRefreshListener {
+                adapter.refresh()
+            }
+
+            fabNewStory.setOnClickListener {
+                gotoCreateStoryPage()
+            }
+
+            btnMap.setOnClickListener {
+                gotoStoryMapPage()
+            }
+        }
+
+        adapter.addLoadStateListener { loadState ->
+
+            showView(CONTENT_VIEW_INDEX)
+
+            val isEmptyList = loadState.refresh is LoadState.NotLoading && adapter.itemCount == 0
+            val isLoading = loadState.refresh is LoadState.Loading && adapter.itemCount == 0
+
+            if (isEmptyList) {
+                binding.swipeRefresh.isRefreshing = false
+                showErrorView("Belum ada data")
+                return@addLoadStateListener
+            }
+
+            if (isLoading) showView(LOADING_VIEW_INDEX)
+
+            if (loadState.refresh is LoadState.Loading ||
+                loadState.append is LoadState.Loading
+            ) {
+                binding.swipeRefresh.isRefreshing = true
+            }
+            else {
+                binding.swipeRefresh.isRefreshing = false
+
+                val errorState = when {
+                    loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                    loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+                    loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                    else -> null
+                }
+                errorState?.let {
+                    if (adapter.itemCount == 0) showErrorView(it.error.toString())
+                    showToast(it.error.toString())
+                }
+            }
+        }
+    }
+
+    private fun refreshData() {
         adapter.refresh()
-      }
-
-      fabNewStory.setOnClickListener {
-        gotoCreateStoryPage()
-      }
-
-      btnMap.setOnClickListener {
-        gotoStoryMapPage()
-      }
     }
 
-    adapter.addLoadStateListener { loadState ->
+    private fun gotoCreateStoryPage() {
 
-      showView(CONTENT_VIEW_INDEX)
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+            binding.toolbarView.ivToolbar, "toolbar_image")
 
-      val isEmptyList = loadState.refresh is LoadState.NotLoading && adapter.itemCount == 0
-      val isLoading = loadState.refresh is LoadState.Loading && adapter.itemCount == 0
+        val intent = StoryCreateActivity.newIntent(this)
+        activityLauncher.launch(intent,
+            object : ActivityResultLauncher.OnActivityResult<ActivityResult> {
+                override fun onActivityResult(result: ActivityResult) {
+                    if (result.resultCode == Activity.RESULT_OK) {
+                        refreshData()
+                    }
+                }
+            },
+            options)
+    }
 
-      if (isEmptyList) {
-        binding.swipeRefresh.isRefreshing = false
-        showErrorView("Belum ada data")
-        return@addLoadStateListener
-      }
-
-      if (isLoading) showView(LOADING_VIEW_INDEX)
-
-      if (loadState.refresh is LoadState.Loading ||
-        loadState.append is LoadState.Loading
-      ) {
-        binding.swipeRefresh.isRefreshing = true
-      }
-      else {
-        binding.swipeRefresh.isRefreshing = false
-
-        val errorState = when {
-          loadState.append is LoadState.Error -> loadState.append as LoadState.Error
-          loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
-          loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
-          else -> null
+    private fun showLogoutConfirmationDialog() {
+        MaterialDialog(this).show {
+            title(R.string.dialog_logout_confirmation_title)
+            message(R.string.dialog_logout_confirmation_message)
+            cancelOnTouchOutside(false)
+            cancelable(false)
+            positiveButton(R.string.yes) { dialog ->
+                accountViewModel.logout()
+                dialog.dismiss()
+            }
+            negativeButton(R.string.cancel) { dialog ->
+                dialog.dismiss()
+            }
         }
-        errorState?.let {
-          if (adapter.itemCount == 0) showErrorView(it.error.toString())
-          showToast(it.error.toString())
+    }
+
+    private fun gotoDetailStoryPage(view: View, model: StoryDataModel) {
+        val intent = StoryDetailActivity.newIntent(this, model)
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+            view, Const.SHARED_ELEMENT_PHOTO)
+
+        startActivity(intent, options.toBundle())
+    }
+
+    private fun gotoLoginPage() {
+        startActivity(LoginActivity.newIntent(this))
+        finish()
+    }
+
+    private fun gotoMapActivity() {
+        startActivity(MapActivity.newIntent(this))
+    }
+
+    private fun gotoStoryMapPage() {
+        startActivity(StoryMapActivity.newIntent(this))
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_logout -> {
+                showLogoutConfirmationDialog()
+            }
+            R.id.action_locale_setting -> {
+                startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+            }
         }
-      }
+        return super.onOptionsItemSelected(item)
     }
-  }
 
-  private fun refreshData() {
-    adapter.refresh()
-  }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_logout, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
 
-  private fun gotoCreateStoryPage() {
+    private fun showErrorView(message: String) {
+        showView(ERROR_VIEW_INDEX)
 
-    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-      binding.toolbarView.ivToolbar, "toolbar_image")
-
-    val intent = StoryCreateActivity.newIntent(this)
-    activityLauncher.launch(intent,
-      object : ActivityResultLauncher.OnActivityResult<ActivityResult> {
-        override fun onActivityResult(result: ActivityResult) {
-          if (result.resultCode == Activity.RESULT_OK) {
-            refreshData()
-          }
+        binding.warningView.run {
+            tvWarning.text = message
+            btnWarning.setOnClickListener {
+                refreshData()
+            }
         }
-      },
-      options)
-  }
 
-  private fun showLogoutConfirmationDialog() {
-    MaterialDialog(this).show {
-      title(R.string.dialog_logout_confirmation_title)
-      message(R.string.dialog_logout_confirmation_message)
-      cancelOnTouchOutside(false)
-      cancelable(false)
-      positiveButton(R.string.yes) { dialog ->
-        accountViewModel.logout()
-        dialog.dismiss()
-      }
-      negativeButton(R.string.cancel) { dialog ->
-        dialog.dismiss()
-      }
-    }
-  }
-
-  private fun gotoDetailStoryPage(view: View, model: StoryDataModel) {
-    val intent = StoryDetailActivity.newIntent(this, model)
-    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-      view, Const.SHARED_ELEMENT_PHOTO)
-
-    startActivity(intent, options.toBundle())
-  }
-
-  private fun gotoLoginPage() {
-    startActivity(LoginActivity.newIntent(this))
-    finish()
-  }
-
-  private fun gotoMapActivity() {
-    startActivity(MapActivity.newIntent(this))
-  }
-
-  private fun gotoStoryMapPage() {
-    startActivity(StoryMapActivity.newIntent(this))
-  }
-
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    when (item.itemId) {
-      R.id.action_logout -> {
-        showLogoutConfirmationDialog()
-      }
-      R.id.action_locale_setting -> {
-        startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
-      }
-      R.id.action_map -> {
-        gotoMapActivity()
-      }
-    }
-    return super.onOptionsItemSelected(item)
-  }
-
-  override fun onCreateOptionsMenu(menu: Menu): Boolean {
-    menuInflater.inflate(R.menu.menu_logout, menu)
-    return super.onCreateOptionsMenu(menu)
-  }
-
-  private fun showErrorView(message: String) {
-    showView(ERROR_VIEW_INDEX)
-
-    binding.warningView.run {
-      tvWarning.text = message
-      btnWarning.setOnClickListener {
-        refreshData()
-      }
     }
 
-  }
+    private fun showView(viewId: Int) {
+        binding.viewAnimator.displayedChild = viewId
+    }
 
-  private fun showView(viewId: Int) {
-    binding.viewAnimator.displayedChild = viewId
-  }
+    companion object {
 
-  companion object {
+        const val LOADING_VIEW_INDEX = 0
+        const val CONTENT_VIEW_INDEX = 1
+        const val ERROR_VIEW_INDEX = 2
 
-    const val LOADING_VIEW_INDEX = 0
-    const val CONTENT_VIEW_INDEX = 1
-    const val ERROR_VIEW_INDEX = 2
-
-    fun newIntent(context: Context): Intent =
-      Intent(context, StoryListActivity::class.java)
-  }
+        fun newIntent(context: Context): Intent =
+            Intent(context, StoryListActivity::class.java)
+    }
 }
