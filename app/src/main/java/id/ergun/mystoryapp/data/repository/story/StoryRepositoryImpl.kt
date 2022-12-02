@@ -27,58 +27,66 @@ import javax.inject.Inject
  * Created 27/09/22 at 22.06
  */
 class StoryRepositoryImpl @Inject constructor(
-    private val apiService: ApiService,
-    private val authDataStore: AuthDataStore
+  private val apiService: ApiService,
+  private val authDataStore: AuthDataStore
 ): StoryRepository {
 
-    override suspend fun createStory(request: StoryFormRequest): Flow<ResponseWrapper<BaseDomainModel>> {
-        return flow {
-            try {
-                val token = authDataStore.getToken().getOrDefault("")
+  override suspend fun createStory(request: StoryFormRequest): Flow<ResponseWrapper<BaseDomainModel>> {
+    return flow {
+      try {
+        val token = authDataStore.getToken().getOrDefault("")
 
-                val description: RequestBody =
-                    request.description.toRequestBody(Const.MEDIA_TYPE_TEXT_PLAIN.toMediaTypeOrNull())
+        val description: RequestBody =
+          request.description.toRequestBody(Const.MEDIA_TYPE_TEXT_PLAIN.toMediaTypeOrNull())
 
-                val profilePictureRequestBody =
-                    request.photo.asRequestBody("image/*".toMediaTypeOrNull())
+        val profilePictureRequestBody =
+          request.photo.asRequestBody("image/*".toMediaTypeOrNull())
 
-                val photoMultipartBody = MultipartBody.Part.createFormData(
-                    "photo",
-                    "photo_${System.currentTimeMillis()}.jpg",
-                    profilePictureRequestBody
-                )
-                val response = apiService.createStory(
-                    Helper.getHeaderMap(token),
-                    photoMultipartBody,
-                    description
-                ).getResult {
-                    BaseDomainModel(
-                        it.error ?: false,
-                        it.message ?: ""
-                    )
-                }
-                emit(response)
-            } catch (exception: Exception) {
-                emit(ResponseWrapper.error("Terjadi kesalahan"))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
+        val photoMultipartBody = MultipartBody.Part.createFormData(
+          "photo",
+          "photo_${System.currentTimeMillis()}.jpg",
+          profilePictureRequestBody
+        )
 
-    override suspend fun getStories(params: HashMap<String, String>): Flow<ResponseWrapper<ArrayList<StoryDataModel>>> {
-        return flow {
-            try {
-                val token = authDataStore.getToken().getOrDefault("")
+        val latitude: RequestBody? =
+          request.lat?.toString()?.toRequestBody(Const.MEDIA_TYPE_TEXT_PLAIN.toMediaTypeOrNull())
+        val longitude: RequestBody? =
+          request.lon?.toString()?.toRequestBody(Const.MEDIA_TYPE_TEXT_PLAIN.toMediaTypeOrNull())
 
-                val response = apiService.getStories(
-                    Helper.getHeaderMap(token),
-                    params
-                ).getResult {
-                    StoriesResponse.mapToDomainModelList(it)
-                }
-                emit(response)
-            } catch (exception: Exception) {
-                emit(ResponseWrapper.error("Terjadi kesalahan"))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
+        val response = apiService.createStory(
+          Helper.getHeaderMap(token),
+          photoMultipartBody,
+          description,
+          latitude,
+          longitude
+        ).getResult {
+          BaseDomainModel(
+            it.error ?: false,
+            it.message ?: ""
+          )
+        }
+        emit(response)
+      } catch (exception: Exception) {
+        emit(ResponseWrapper.error("Terjadi kesalahan"))
+      }
+    }.flowOn(Dispatchers.IO)
+  }
+
+  override suspend fun getStories(params: HashMap<String, String>): Flow<ResponseWrapper<ArrayList<StoryDataModel>>> {
+    return flow {
+      try {
+        val token = authDataStore.getToken().getOrDefault("")
+
+        val response = apiService.getStories(
+          Helper.getHeaderMap(token),
+          params
+        ).getResult {
+          StoriesResponse.mapToDomainModelList(it)
+        }
+        emit(response)
+      } catch (exception: Exception) {
+        emit(ResponseWrapper.error("Terjadi kesalahan"))
+      }
+    }.flowOn(Dispatchers.IO)
+  }
 }

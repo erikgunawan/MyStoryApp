@@ -21,8 +21,8 @@ data class Story(
                 item.createdAt ?: "",
                 item.description ?: "",
                 item.id ?: "",
-                item.lat ?: 0.0,
-                item.lon ?: 0.0,
+                item.lat,
+                item.lon,
                 item.name,
                 item.photoUrl
             )

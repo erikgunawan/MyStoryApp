@@ -43,4 +43,10 @@
     <string name="story_description_hint">Story Description</string>
     <string name="show_story_on_map">Show Story on Map</string>
     <string name="refresh_lokasi">Location Refresh</string>
+    <string name="unknown_location">Unknown Location</string>
+  <string name="select_location">Select Location</string>
+  <string name="select_this_location_desc">Click here to select this location</string>
+  <string name="my_location">My Location</string>
+  <string name="story_name_title_map"><b>%s\'s</b> Story</string>
+  <string name="choose_picture">Choose a Picture</string>
 </resources>

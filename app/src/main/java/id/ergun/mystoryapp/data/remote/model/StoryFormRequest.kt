@@ -11,7 +11,6 @@ import java.io.File
 data class StoryFormRequest(
     @Expose @SerializedName("description") val description: String,
     @Expose @SerializedName("photo") val photo: File,
-//    not implemented yet
-//    @Expose @SerializedName("lat") val lat: Double?,
-//    @Expose @SerializedName("lon") val lon: Double?,
+    @Expose @SerializedName("lat") val lat: Double? = null,
+    @Expose @SerializedName("lon") val lon: Double? = null
 )

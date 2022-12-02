@@ -52,6 +52,7 @@
         <activity android:name=".presentation.ui.story.detail.StoryDetailActivity" />
         <activity android:name=".presentation.ui.map.MapActivity" />
         <activity android:name=".presentation.ui.story.map.StoryMapActivity" />
+      <activity android:name=".presentation.ui.story.create.map.StoryCreateMapActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

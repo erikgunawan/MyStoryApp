@@ -8,7 +8,6 @@ import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.core.util.Pair
 import androidx.activity.result.ActivityResult
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +31,7 @@ import id.ergun.mystoryapp.presentation.ui.story.detail.StoryDetailActivity
 import id.ergun.mystoryapp.presentation.ui.story.map.StoryMapActivity
 import id.ergun.mystoryapp.presentation.viewmodel.AccountViewModel
 import id.ergun.mystoryapp.presentation.viewmodel.StoryListViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -149,7 +149,11 @@ class StoryListActivity : AppCompatActivity() {
     }
 
     private fun refreshData() {
+      lifecycleScope.launch {
         adapter.refresh()
+        delay(2000)
+        binding.rvData.smoothScrollToPosition(0)
+      }
     }
 
     private fun gotoCreateStoryPage() {

@@ -15,8 +15,11 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mystoryapp.R
+import id.ergun.mystoryapp.common.util.Helper.getAddressName
 import id.ergun.mystoryapp.common.util.Helper.loadImage
+import id.ergun.mystoryapp.common.util.Helper.replaceIfNull
 import id.ergun.mystoryapp.common.util.Helper.toLocalDateFormat
+import id.ergun.mystoryapp.common.util.Helper.visible
 import id.ergun.mystoryapp.databinding.ActivityStoryDetailBinding
 import id.ergun.mystoryapp.domain.model.StoryDataModel
 import id.ergun.mystoryapp.presentation.viewmodel.StoryViewModel
@@ -72,6 +75,13 @@ class StoryDetailActivity : AppCompatActivity(), OnMapReadyCallback {
             tvName.text = story.name
             tvDescription.text = story.description
             tvDate.text = story.createdAt.toLocalDateFormat()
+
+          val isLocationAvailable = story.lat != null && story.lon != null
+          tvStoryLocation.visible(isLocationAvailable)
+          tvStoryLocation.text = getAddressName(this@StoryDetailActivity, story.lat.replaceIfNull(), story.lon.replaceIfNull())
+
+          mapView.visible(isLocationAvailable)
+
             ivPhoto.loadImage(story.photoUrl)
         }
     }
@@ -87,9 +97,9 @@ class StoryDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val boundsBuilder = LatLngBounds.Builder()
 
-        val latLng = LatLng(viewModel.selectedStory.lat, viewModel.selectedStory.lon)
-//      val addressName = getAddressName(tourism.latitude, tourism.longitude)
-        mMap.addMarker(MarkerOptions().position(latLng).title("abc").snippet("def"))?.showInfoWindow()
+        val latLng = LatLng(viewModel.selectedStory.lat.replaceIfNull(), viewModel.selectedStory.lon.replaceIfNull())
+      val title = getString(R.string.story_name_title_map, viewModel.selectedStory.name)
+        mMap.addMarker(MarkerOptions().position(latLng).title(title))?.showInfoWindow()
         boundsBuilder.include(latLng)
 
         val bounds: LatLngBounds = boundsBuilder.build()

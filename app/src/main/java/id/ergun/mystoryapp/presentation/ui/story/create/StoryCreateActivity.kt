@@ -11,15 +11,14 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.MenuItem
 import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
-import com.google.android.gms.maps.GoogleMap
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mystoryapp.R
 import id.ergun.mystoryapp.common.util.ActivityResultLauncher
@@ -28,9 +27,11 @@ import id.ergun.mystoryapp.common.util.Helper.loadImage
 import id.ergun.mystoryapp.common.util.Helper.rotateBitmap
 import id.ergun.mystoryapp.common.util.Helper.showToast
 import id.ergun.mystoryapp.common.util.Helper.uriToFile
+import id.ergun.mystoryapp.common.util.Helper.visible
 import id.ergun.mystoryapp.common.util.ResponseWrapper
 import id.ergun.mystoryapp.data.remote.model.StoryFormRequest
 import id.ergun.mystoryapp.databinding.ActivityStoryCreateBinding
+import id.ergun.mystoryapp.presentation.ui.story.create.map.StoryCreateMapActivity
 import id.ergun.mystoryapp.presentation.viewmodel.StoryViewModel
 import java.io.File
 
@@ -48,6 +49,10 @@ class StoryCreateActivity : AppCompatActivity() {
 
     private var photoFile: File? = null
 
+  private var latitude: Double? = null
+  private var longitude: Double? = null
+  private var address: String = ""
+
     private val loadingDialog by lazy {
         MaterialDialog(this)
             .title(R.string.loading)
@@ -55,8 +60,6 @@ class StoryCreateActivity : AppCompatActivity() {
             .cancelOnTouchOutside(false)
             .cancelable(false)
     }
-
-    private lateinit var mMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +71,7 @@ class StoryCreateActivity : AppCompatActivity() {
         setupToolbar()
         setupObserve()
         setupListener()
+      setupLocationView()
     }
 
     private fun setupToolbar() {
@@ -78,6 +82,19 @@ class StoryCreateActivity : AppCompatActivity() {
             title = ""
         }
     }
+
+  private fun setupLocationView() {
+    binding.run {
+      val isLocationSelected = latitude != null && longitude != null
+      btnSelectLocation.visible(!isLocationSelected)
+      containerAddress.visible(isLocationSelected)
+      tvAddressLocation.visible(isLocationSelected)
+      ivClearLocation.visible(isLocationSelected)
+
+
+      tvAddressLocation.text = address
+    }
+  }
 
     private fun setupObserve() {
         viewModel.createStoryResponse.observe(this) {
@@ -106,9 +123,16 @@ class StoryCreateActivity : AppCompatActivity() {
             btnGallery.setOnClickListener {
                 gotoGallery()
             }
+          btnSelectLocation.setOnClickListener {
+            gotoSelectLocationPage()
+          }
             btnCreateStory.setOnClickListener {
                 createStory()
             }
+
+          ivClearLocation.setOnClickListener {
+            clearLocation()
+          }
         }
     }
 
@@ -152,7 +176,7 @@ class StoryCreateActivity : AppCompatActivity() {
         val intent = Intent()
         intent.action = Intent.ACTION_GET_CONTENT
         intent.type = "image/*"
-        val chooser = Intent.createChooser(intent, "Choose a Picture")
+        val chooser = Intent.createChooser(intent, getString(R.string.choose_picture))
 
         activityLauncher.launch(chooser,
             object : ActivityResultLauncher.OnActivityResult<ActivityResult> {
@@ -181,7 +205,7 @@ class StoryCreateActivity : AppCompatActivity() {
         }
 
         val request = StoryFormRequest(
-            description, photoFile ?: File.createTempFile("abc", "def")
+            description, photoFile ?: File.createTempFile("abc", "def"), latitude, longitude
         )
 
         loadingDialog.show()
@@ -195,6 +219,14 @@ class StoryCreateActivity : AppCompatActivity() {
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
+
+  private fun clearLocation() {
+    latitude = null
+    longitude = null
+    address = ""
+
+    setupLocationView()
+  }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -216,26 +248,27 @@ class StoryCreateActivity : AppCompatActivity() {
         ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun getMyLocation() {
-        if (ContextCompat.checkSelfPermission(
-                this.applicationContext,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            mMap.isMyLocationEnabled = true
-        } else {
-            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-        }
-    }
+  private fun gotoSelectLocationPage() {
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                getMyLocation()
+    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+      binding.toolbarView.ivToolbar, "toolbar_image")
+
+    val intent = StoryCreateMapActivity.newIntent(this)
+    activityLauncher.launch(intent,
+      object : ActivityResultLauncher.OnActivityResult<ActivityResult> {
+        override fun onActivityResult(result: ActivityResult) {
+          if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.extras?.run {
+              latitude = getDouble("latitude")
+              longitude = getDouble("longitude")
+              address = getString("address") ?: ""
             }
+            setupLocationView()
+          }
         }
+      },
+      options)
+  }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -255,7 +288,6 @@ class StoryCreateActivity : AppCompatActivity() {
         private const val REQUEST_CODE_PERMISSIONS = 10
 
         fun newIntent(context: Context): Intent =
-            Intent(context, StoryCreateActivity::class.java).apply {
-            }
+            Intent(context, StoryCreateActivity::class.java)
     }
 }

@@ -31,8 +31,6 @@ class StoryViewModel @Inject constructor(
 
     fun createStory(request: StoryFormRequest) {
         viewModelScope.launch {
-//            val request = StoryFormRequest(description, File.createTempFile("abc","def"))
-
             storyUseCase.createStory(request).collect {
                 _createStoryResponse.postValue(it)
             }
