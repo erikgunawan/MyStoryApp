@@ -1,5 +1,6 @@
 package id.ergun.mystoryapp.presentation.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,7 +23,7 @@ class StoryViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _storyList = MutableLiveData<ResponseWrapper<ArrayList<StoryDataModel>>>()
-    val stories = _storyList
+    val stories: LiveData<ResponseWrapper<ArrayList<StoryDataModel>>> = _storyList
 
     private val _createStoryResponse = MutableLiveData<ResponseWrapper<BaseDomainModel>>()
     val createStoryResponse = _createStoryResponse

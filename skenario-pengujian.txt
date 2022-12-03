@@ -1,0 +1,54 @@
+Skenario Pengujian
+Unit Test View Model
+
+1. AccountViewModelTest
+    a. Ketika berhasil mendapatkan token
+        - Memastikan data token tidak null atau kosong
+        - Memastikan mengembalikan ResponseWrapper.Status.SUCCESS
+
+    b. Ketika gagal mendapatkan token / token kosong
+        - Memastikan mengembalikan ResponseWrapper.Status.ERROR
+
+    c. Ketika berhasil logout
+        - Memastikan mengembalikan ResponseWrapper.Status.SUCCESS
+
+
+2. LoginViewModelTest
+    a. Ketika berhasil login
+        - Memastikan data (AuthDataModel) tidak null
+        - Memastikan mengembalikan ResponseWrapper.Status.SUCCESS
+
+    b. Ketika gagal login
+        - Memastikan mengembalikan ResponseWrapper.Status.ERROR
+
+
+3. RegisterViewModelTest
+    a. Ketika berhasil register
+        - Memastikan mengembalikan ResponseWrapper.Status.SUCCESS
+
+    b. Ketika gagal register
+        - Memastikan mengembalikan ResponseWrapper.Status.ERROR
+
+
+4. StoryListViewModelTest
+    a. Ketika berhasil mendapatkan story
+        - Memastikan data tidak null
+        - Memastikan jumlah data sesuai dengan yang diharapkan
+
+
+5. StoryViewModelTest
+    a. Ketika berhasil membuat story baru
+        - Memastikan mengembalikan ResponseWrapper.Status.SUCCESS
+
+    b. Ketika gagal membuat story baru
+        - Memastikan mengembalikan ResponseWrapper.Status.ERROR
+
+    c. Ketika berhasil mendapatkan story
+        - Memastikan data tidak null
+        - Memastikan mengembalikan ResponseWrapper.Status.SUCCESS
+        - Memastikan jumlah data sesuai dengan yang diharapkan
+
+    d. Ketika gagal mendapatkan story
+        - Memastikan mengembalikan data null
+        - Memastikan mengembalikan ResponseWrapper.Status.ERROR
+

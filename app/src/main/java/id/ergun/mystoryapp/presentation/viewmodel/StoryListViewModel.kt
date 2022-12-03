@@ -3,6 +3,7 @@ package id.ergun.mystoryapp.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.ergun.mystoryapp.domain.model.StoryDataModel
 import id.ergun.mystoryapp.domain.usecase.story.paging.StoryListUseCase
@@ -19,6 +20,6 @@ class StoryListViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun getStories(): Flow<PagingData<StoryDataModel>> {
-        return storyListUseCase.getStories(viewModelScope)
+        return storyListUseCase.getStories().cachedIn(viewModelScope)
     }
 }
