@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mystoryapp.R
+import id.ergun.mystoryapp.common.util.Const
 import id.ergun.mystoryapp.common.util.Helper.replaceIfNull
 import id.ergun.mystoryapp.common.util.Helper.showToast
 import id.ergun.mystoryapp.common.util.ResponseWrapper
@@ -91,15 +92,6 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
             )?.tag = story
             boundsBuilder.include(latLng)
         }
-        val bounds: LatLngBounds = boundsBuilder.build()
-        mMap.animateCamera(
-            CameraUpdateFactory.newLatLngBounds(
-                bounds,
-                resources.displayMetrics.widthPixels,
-                resources.displayMetrics.heightPixels,
-                300
-            )
-        )
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -111,6 +103,8 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isMapToolbarEnabled = true
 
         getMyLocation()
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Const.INDONESIA_LATLNG,4f))
 
         mMap.setOnInfoWindowClickListener { marker ->
             val story: StoryDataModel = marker.tag as StoryDataModel

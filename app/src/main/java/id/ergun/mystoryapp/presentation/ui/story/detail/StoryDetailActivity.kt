@@ -102,15 +102,7 @@ class StoryDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(MarkerOptions().position(latLng).title(title))?.showInfoWindow()
         boundsBuilder.include(latLng)
 
-        val bounds: LatLngBounds = boundsBuilder.build()
-        mMap.animateCamera(
-            CameraUpdateFactory.newLatLngBounds(
-                bounds,
-                resources.displayMetrics.widthPixels,
-                resources.displayMetrics.heightPixels,
-                300
-            )
-        )
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14f))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

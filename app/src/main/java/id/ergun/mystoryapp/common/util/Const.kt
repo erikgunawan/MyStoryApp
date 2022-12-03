@@ -1,6 +1,7 @@
 package id.ergun.mystoryapp.common.util
 
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.google.android.gms.maps.model.LatLng
 
 /**
  * @author erikgunawan
@@ -13,4 +14,6 @@ object Const {
     const val SHARED_ELEMENT_TOOLBAR_IMAGE = "toolbar_image"
 
     val PREFERENCES_KEY_TOKEN = stringPreferencesKey("token")
+
+    val INDONESIA_LATLNG = LatLng(-2.4153253,108.8513128)
 }

@@ -1,6 +1,5 @@
 package id.ergun.mystoryapp.common.util
 
-import android.app.Application
 import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
@@ -108,18 +107,6 @@ object Helper {
         }
     }
 
-    fun createFile(application: Application): File {
-        val mediaDir = application.externalMediaDirs.firstOrNull()?.let {
-            File(it, application.resources.getString(string.app_name)).apply { mkdirs() }
-        }
-
-        val outputDirectory = if (
-            mediaDir != null && mediaDir.exists()
-        ) mediaDir else application.filesDir
-
-        return File(outputDirectory, "$timeStamp.jpg")
-    }
-
     fun String.toLocalDateFormat(): String {
         return try {
             val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", getLocale())
@@ -127,12 +114,9 @@ object Helper {
 
             val formatter = SimpleDateFormat("dd MMMM yyyy HH:mm", getLocale())
 
-            val timeInMillis = formatter.format(date.time)
-
-            val newDate = Date(timeInMillis)
-            formatter.timeZone = TimeZone.getDefault()
-            return formatter.format(newDate)
+            return formatter.format(date.time)
         } catch (e: Exception) {
+            e.printStackTrace()
             this
         }
     }
@@ -146,11 +130,6 @@ object Helper {
     fun View.visible(visible: Boolean = true) {
         visibility = if (visible) View.VISIBLE else View.GONE
     }
-
-    fun View.gone() {
-        visibility = View.GONE
-    }
-
 
     @Suppress("DEPRECATION")
     fun getAddressName(context: Context, lat: Double, lon: Double): String {

@@ -21,14 +21,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mystoryapp.R
 import id.ergun.mystoryapp.common.util.Helper
 import id.ergun.mystoryapp.common.util.Helper.showToast
 import id.ergun.mystoryapp.databinding.ActivityStoryCreateMapBinding
 import id.ergun.mystoryapp.databinding.MapInfoWindowCustomViewBinding
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -149,21 +147,11 @@ class StoryCreateMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMa
         }
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
-                Timber.d("location is ${Gson().toJson(location)}")
-                // getting the last known or current location
                 if (location != null) {
                     val latLng = LatLng(location.latitude, location.longitude)
                     onMarkerSelected(latLng)
                     boundsBuilder.include(latLng)
-                    val bounds: LatLngBounds = boundsBuilder.build()
-                    mMap.animateCamera(
-                        CameraUpdateFactory.newLatLngBounds(
-                            bounds,
-                            resources.displayMetrics.widthPixels,
-                            resources.displayMetrics.heightPixels,
-                            300
-                        )
-                    )
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14f))
                 } else {
                     showToast(getString(R.string.failed_to_get_current_location_message))
                 }
