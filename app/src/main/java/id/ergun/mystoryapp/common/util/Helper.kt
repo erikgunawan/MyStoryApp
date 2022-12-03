@@ -5,6 +5,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -15,10 +16,8 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import id.ergun.mystoryapp.R
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
+import id.ergun.mystoryapp.R.string
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -111,7 +110,7 @@ object Helper {
 
     fun createFile(application: Application): File {
         val mediaDir = application.externalMediaDirs.firstOrNull()?.let {
-            File(it, application.resources.getString(R.string.app_name)).apply { mkdirs() }
+            File(it, application.resources.getString(string.app_name)).apply { mkdirs() }
         }
 
         val outputDirectory = if (
@@ -138,18 +137,37 @@ object Helper {
         }
     }
 
-    private fun getLocale(): Locale = Locale("id", "ID")
+    private fun getLocale(): Locale = Locale.getDefault()
 
     fun Context.showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    fun View.visible() {
-        visibility = View.VISIBLE
+    fun View.visible(visible: Boolean = true) {
+        visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     fun View.gone() {
         visibility = View.GONE
     }
+
+
+    @Suppress("DEPRECATION")
+    fun getAddressName(context: Context, lat: Double, lon: Double): String {
+        var addressName = ""
+        val geocoder = Geocoder(context, Locale.getDefault())
+        try {
+            val list = geocoder.getFromLocation(lat, lon, 1)
+            if (list != null && list.size != 0) {
+                addressName = list[0].getAddressLine(0)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            addressName = context.getString(string.unknown_location)
+        }
+        return addressName
+    }
+
+    fun Double?.replaceIfNull(): Double = this ?: 0.0
 
 }

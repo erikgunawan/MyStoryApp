@@ -63,7 +63,11 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
                 ResponseWrapper.Status.ERROR -> {
-                    it.message?.let { it1 -> showToast(it1) }
+                    if (it.code == 999) {
+                        showToast(getString(R.string.something_wrong_message))
+                    } else {
+                        it.message?.let { it1 -> showToast(it1) }
+                    }
                 }
                 else -> {
                     // do something

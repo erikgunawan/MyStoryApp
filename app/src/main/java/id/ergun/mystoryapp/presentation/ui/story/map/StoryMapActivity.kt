@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,16 +16,15 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mystoryapp.R
+import id.ergun.mystoryapp.common.util.Helper.replaceIfNull
 import id.ergun.mystoryapp.common.util.ResponseWrapper
 import id.ergun.mystoryapp.databinding.ActivityStoryMapBinding
 import id.ergun.mystoryapp.domain.model.StoryDataModel
 import id.ergun.mystoryapp.presentation.ui.story.detail.StoryDetailActivity
 import id.ergun.mystoryapp.presentation.viewmodel.StoryViewModel
-import timber.log.Timber
 
 /**
  * @author erikgunawan
@@ -83,11 +81,12 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun addMarkers(stories: ArrayList<StoryDataModel>) {
         stories.forEach { story ->
-            val latLng = LatLng(story.lat, story.lon)
+            val latLng = LatLng(story.lat.replaceIfNull(), story.lon.replaceIfNull())
+            val title = getString(R.string.story_name_title_map, story.name)
             mMap.addMarker(
                 MarkerOptions()
                     .position(latLng)
-                    .title(story.name)
+                    .title(title)
                     .snippet(story.description)
             )?.tag = story
             boundsBuilder.include(latLng)
@@ -111,13 +110,7 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isCompassEnabled = true
         mMap.uiSettings.isMapToolbarEnabled = true
 
-        val dicodingSpace = LatLng(-6.8957643, 107.6338462)
-
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(dicodingSpace, 15f))
-
         getMyLocation()
-        setMapStyle()
-
 
         mMap.setOnInfoWindowClickListener { marker ->
             val story: StoryDataModel = marker.tag as StoryDataModel
@@ -146,18 +139,6 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun setMapStyle() {
-        try {
-            val success =
-                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
-            if (!success) {
-                Timber.tag(TAG).e("Style parsing failed.")
-            }
-        } catch (exception: Resources.NotFoundException) {
-            Timber.tag(TAG).e(exception, "Can't find style. Error: ")
-        }
-    }
-
     private val boundsBuilder = LatLngBounds.Builder()
 
     private fun gotoDetailStoryPage(story: StoryDataModel) {
@@ -173,8 +154,6 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     companion object {
-        private const val TAG = "MapsActivity"
-
         fun newIntent(context: Context): Intent =
             Intent(context, StoryMapActivity::class.java)
     }

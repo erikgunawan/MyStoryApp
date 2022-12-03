@@ -24,7 +24,6 @@ class StoryListRepositoryImpl @Inject constructor(
 ) : StoryListRepository {
 
     override fun getStories(
-        token: String,
         scope: CoroutineScope
     ): Flow<PagingData<StoryDataModel>> {
         return Pager(config = PagingConfig(10)) {

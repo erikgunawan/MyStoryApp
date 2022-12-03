@@ -27,8 +27,8 @@ interface ApiService {
         @HeaderMap headers: Map<String, String>,
         @Part photo:  MultipartBody.Part,
         @Part("description") description : RequestBody,
-        @Part("lat") lat : Double = 0.0,
-        @Part("lon") long : Double = 0.0
+        @Part("lat") lat : RequestBody?,
+        @Part("lon") long : RequestBody?
     ): Response<BaseResponse>
 
     @GET("v1/stories")

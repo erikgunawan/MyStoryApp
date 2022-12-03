@@ -33,7 +33,7 @@ class AuthRepositoryImpl @Inject constructor(private val apiService: ApiService,
                 }
                 emit(response)
             } catch (exception: Exception) {
-                ResponseWrapper.error("exception", null)
+                emit(ResponseWrapper.error(exception.message.toString()))
             }
         }.flowOn(Dispatchers.IO)
     }
@@ -50,7 +50,7 @@ class AuthRepositoryImpl @Inject constructor(private val apiService: ApiService,
                     authDataStore.setToken(response.data?.token ?: "")
                 }
             } catch (exception: Exception) {
-                ResponseWrapper.error("exception", null)
+                emit(ResponseWrapper.error(exception.message.toString()))
             }
         }.flowOn(Dispatchers.IO)
     }

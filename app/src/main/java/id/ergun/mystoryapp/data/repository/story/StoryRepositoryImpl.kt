@@ -47,10 +47,18 @@ class StoryRepositoryImpl @Inject constructor(
                     "photo_${System.currentTimeMillis()}.jpg",
                     profilePictureRequestBody
                 )
+
+                val latitude: RequestBody? =
+                    request.lat?.toString()?.toRequestBody(Const.MEDIA_TYPE_TEXT_PLAIN.toMediaTypeOrNull())
+                val longitude: RequestBody? =
+                    request.lon?.toString()?.toRequestBody(Const.MEDIA_TYPE_TEXT_PLAIN.toMediaTypeOrNull())
+
                 val response = apiService.createStory(
                     Helper.getHeaderMap(token),
                     photoMultipartBody,
-                    description
+                    description,
+                    latitude,
+                    longitude
                 ).getResult {
                     BaseDomainModel(
                         it.error ?: false,
@@ -59,7 +67,7 @@ class StoryRepositoryImpl @Inject constructor(
                 }
                 emit(response)
             } catch (exception: Exception) {
-                emit(ResponseWrapper.error("Terjadi kesalahan"))
+                emit(ResponseWrapper.error(exception.message.toString()))
             }
         }.flowOn(Dispatchers.IO)
     }
@@ -77,7 +85,7 @@ class StoryRepositoryImpl @Inject constructor(
                 }
                 emit(response)
             } catch (exception: Exception) {
-                emit(ResponseWrapper.error("Terjadi kesalahan"))
+                emit(ResponseWrapper.error(exception.message.toString()))
             }
         }.flowOn(Dispatchers.IO)
     }

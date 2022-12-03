@@ -1,7 +1,11 @@
 package id.ergun.mystoryapp.common.util
 
+import com.google.gson.Gson
+import id.ergun.mystoryapp.data.remote.model.BaseResponse
+import okhttp3.ResponseBody
 import retrofit2.Response
 import timber.log.Timber
+import java.io.IOException
 
 /**
  * @author erikgunawan
@@ -15,13 +19,30 @@ fun <T, R> Response<T>.getResult(transform: (T) -> (R)): ResponseWrapper<R> {
             if (body != null) {
                 return success(body)
             }
+        } else {
+            Timber.e("catch")
+            val errorResponse = response.errorBody()?.parseErrorBody()
+            Timber.e(Gson().toJson(errorResponse))
+            return error(errorResponse?.message ?: "", code())
         }
-        return error("Terjadi kesalahan")
+
+        return error(message = "", code = 999)
     } catch (e: Exception) {
         return error(e.message ?: e.toString())
     }
 }
 
+
+fun ResponseBody.parseErrorBody(): BaseResponse? {
+    val gson = Gson()
+    val adapter = gson.getAdapter(BaseResponse::class.java)
+    return try {
+        adapter.fromJson(string())
+    } catch (e: IOException) {
+        e.printStackTrace()
+        null
+    }
+}
 
 private fun <T> success(body: T): ResponseWrapper<T> {
     return ResponseWrapper.success(body)

@@ -20,7 +20,9 @@ import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mystoryapp.R
 import id.ergun.mystoryapp.common.util.ActivityResultLauncher
+import id.ergun.mystoryapp.common.util.BaseLoadingStateAdapter
 import id.ergun.mystoryapp.common.util.Const
+import id.ergun.mystoryapp.common.util.Const.SHARED_ELEMENT_TOOLBAR_IMAGE
 import id.ergun.mystoryapp.common.util.Helper.showToast
 import id.ergun.mystoryapp.common.util.ResponseWrapper
 import id.ergun.mystoryapp.databinding.ActivityStoryListBinding
@@ -31,6 +33,7 @@ import id.ergun.mystoryapp.presentation.ui.story.detail.StoryDetailActivity
 import id.ergun.mystoryapp.presentation.ui.story.map.StoryMapActivity
 import id.ergun.mystoryapp.presentation.viewmodel.AccountViewModel
 import id.ergun.mystoryapp.presentation.viewmodel.StoryListViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -76,7 +79,11 @@ class StoryListActivity : AppCompatActivity() {
 
         binding.rvData.let {
             it.layoutManager = LinearLayoutManager(this)
-            it.adapter = adapter
+            it.adapter = adapter.withLoadStateFooter(
+                footer = BaseLoadingStateAdapter {
+                    adapter.retry()
+                }
+            )
         }
     }
 
@@ -119,7 +126,7 @@ class StoryListActivity : AppCompatActivity() {
 
             if (isEmptyList) {
                 binding.swipeRefresh.isRefreshing = false
-                showErrorView("Belum ada data")
+                showErrorView(getString(R.string.no_data_message))
                 return@addLoadStateListener
             }
 
@@ -148,13 +155,17 @@ class StoryListActivity : AppCompatActivity() {
     }
 
     private fun refreshData() {
-        adapter.refresh()
+        lifecycleScope.launch {
+            adapter.refresh()
+            delay(2000)
+            binding.rvData.smoothScrollToPosition(0)
+        }
     }
 
     private fun gotoCreateStoryPage() {
 
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-            binding.toolbarView.ivToolbar, "toolbar_image")
+            binding.toolbarView.ivToolbar, SHARED_ELEMENT_TOOLBAR_IMAGE)
 
         val intent = StoryCreateActivity.newIntent(this)
         activityLauncher.launch(intent,
@@ -187,8 +198,8 @@ class StoryListActivity : AppCompatActivity() {
     private fun gotoDetailStoryPage(view: View, model: StoryDataModel) {
         val intent = StoryDetailActivity.newIntent(this, model)
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-          Pair.create(view, Const.SHARED_ELEMENT_PHOTO),
-          Pair.create(binding.toolbarView.ivToolbar, "toolbar_image")
+            Pair.create(view, Const.SHARED_ELEMENT_PHOTO),
+            Pair.create(binding.toolbarView.ivToolbar, SHARED_ELEMENT_TOOLBAR_IMAGE)
         )
 
         startActivity(intent, options.toBundle())
@@ -202,7 +213,7 @@ class StoryListActivity : AppCompatActivity() {
     private fun gotoStoryMapPage() {
         val intent = StoryMapActivity.newIntent(this)
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-            Pair.create(binding.toolbarView.ivToolbar, "toolbar_image")
+            Pair.create(binding.toolbarView.ivToolbar, SHARED_ELEMENT_TOOLBAR_IMAGE)
         )
 
         startActivity(intent, options.toBundle())

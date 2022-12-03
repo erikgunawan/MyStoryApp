@@ -42,5 +42,14 @@
     <string name="register_here_link">Belum punya akun? Daftar Di Sini</string>
     <string name="story_description_hint">Deskripsi story</string>
     <string name="show_story_on_map">Tampilkan Story pada Peta</string>
-    <string name="refresh_lokasi">Refresh Lokasi</string>
+    <string name="unknown_location">Location tidak diketahui</string>
+    <string name="select_location">Pilih Lokasi</string>
+    <string name="select_this_location_desc">Klik di sini untuk memilih lokasi ini</string>
+    <string name="my_location">Lokasi Saya</string>
+    <string name="story_name_title_map">Story <b>%s</b></string>
+    <string name="choose_picture">Pilih Foto</string>
+    <string name="failed_to_get_current_location_message">Gagal mendapatkan lokasi saat ini</string>
+    <string name="lat_long_info">Lat Long : %s, %s</string>
+    <string name="no_data_message">Belum ada data</string>
+    <string name="something_wrong_message">Terjadi kesalahan. Mohon coba lagi.</string>
 </resources>
