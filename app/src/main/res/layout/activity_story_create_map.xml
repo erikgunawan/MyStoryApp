@@ -19,13 +19,13 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar_view"
         app:layout_constraintBottom_toTopOf="@id/btn_select_location"/>
 
-  <Button
-      android:id="@+id/btn_select_location"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="@string/my_location"
-      android:layout_margin="16dp"
-      android:background="@drawable/btn_primary_ripple"
-      android:textColor="@color/white"
-    app:layout_constraintBottom_toBottomOf="parent" />
+    <Button
+        android:id="@+id/btn_select_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/my_location"
+        android:layout_margin="16dp"
+        android:background="@drawable/btn_primary_ripple"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

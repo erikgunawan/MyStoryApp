@@ -141,10 +141,8 @@ class StoryCreateMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMa
 
     private val boundsBuilder = LatLngBounds.Builder()
     private fun getCurrentLocation() {
-        // checking location permission
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // request permission
             ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQ_CODE)
             return

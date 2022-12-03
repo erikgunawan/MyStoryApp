@@ -6,10 +6,9 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -20,6 +19,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
 import id.ergun.mystoryapp.R
 import id.ergun.mystoryapp.common.util.Helper.replaceIfNull
+import id.ergun.mystoryapp.common.util.Helper.showToast
 import id.ergun.mystoryapp.common.util.ResponseWrapper
 import id.ergun.mystoryapp.databinding.ActivityStoryMapBinding
 import id.ergun.mystoryapp.domain.model.StoryDataModel
@@ -118,25 +118,35 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                getMyLocation()
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            LOCATION_PERMISSION_REQ_CODE -> {
+                if (grantResults.isNotEmpty() &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission granted
+                } else {
+                    showToast(getString(R.string.need_permission_message))
+                    finish()
+                }
             }
         }
+    }
 
     private fun getMyLocation() {
-        if (ContextCompat.checkSelfPermission(
-                this.applicationContext,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            mMap.isMyLocationEnabled = true
-        } else {
-            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQ_CODE
+            )
+            return
         }
+        mMap.isMyLocationEnabled = true
     }
 
     private val boundsBuilder = LatLngBounds.Builder()
@@ -154,6 +164,8 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     companion object {
+        private const val LOCATION_PERMISSION_REQ_CODE = 1000
+
         fun newIntent(context: Context): Intent =
             Intent(context, StoryMapActivity::class.java)
     }
