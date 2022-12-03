@@ -8,9 +8,7 @@ class ResponseWrapper<out T>(val status: Status, val data: T?, val message: Stri
 
     enum class Status {
         SUCCESS,
-        ERROR,
-        LOADING,
-        EMPTY_DATA
+        ERROR
     }
 
     companion object {
@@ -18,20 +16,8 @@ class ResponseWrapper<out T>(val status: Status, val data: T?, val message: Stri
             return ResponseWrapper(Status.SUCCESS, data, null)
         }
 
-        fun <T> success(data: T, message: String): ResponseWrapper<T> {
-            return ResponseWrapper(Status.SUCCESS, data, message)
-        }
-
-        fun <T> emptyData(message: String, data: T? = null): ResponseWrapper<T> {
-            return ResponseWrapper(Status.EMPTY_DATA, data, message)
-        }
-
         fun <T> error(message: String, data: T? = null, code: Int? = null): ResponseWrapper<T> {
             return ResponseWrapper(Status.ERROR, data, message, code)
-        }
-
-        fun <T> loading(data: T? = null): ResponseWrapper<T> {
-            return ResponseWrapper(Status.LOADING, data, null)
         }
     }
 }

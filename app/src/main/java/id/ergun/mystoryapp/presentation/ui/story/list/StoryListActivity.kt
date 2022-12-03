@@ -105,7 +105,7 @@ class StoryListActivity : AppCompatActivity() {
     private fun setupListener() {
         binding.run {
             swipeRefresh.setOnRefreshListener {
-                adapter.refresh()
+                refreshData()
             }
 
             fabNewStory.setOnClickListener {
@@ -135,9 +135,8 @@ class StoryListActivity : AppCompatActivity() {
             if (loadState.refresh is LoadState.Loading ||
                 loadState.append is LoadState.Loading
             ) {
-                binding.swipeRefresh.isRefreshing = true
-            }
-            else {
+                // do something
+            } else {
                 binding.swipeRefresh.isRefreshing = false
 
                 val errorState = when {
